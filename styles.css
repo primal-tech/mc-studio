@@ -580,18 +580,6 @@ footer{
   text-decoration:none;
   color:var(--ink);
 }
-.piece-meta{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-top:6px;
-}
-.piece-date{
-  font-family:'Playfair Display', serif;
-  font-style:italic;
-  font-size:13px;
-  color:var(--ink-soft);
-}
 .gallery-media{
   position:relative;
   overflow:hidden;
