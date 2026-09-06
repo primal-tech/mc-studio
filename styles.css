@@ -517,6 +517,14 @@ footer{
   text-transform:uppercase;
   color:var(--ink-soft);
 }
+.footer-follow{
+  font-family:'EB Garamond', serif;
+  font-size:14px;
+  letter-spacing:0.02em;
+  text-transform:none;
+  color:var(--ink-soft);
+  margin-bottom:22px;
+}
 .footer-social{
   display:flex;
   justify-content:center;
