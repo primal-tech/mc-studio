@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locked Away — Barn Owl Metal Sculpture | Michael Cunningham Studio</title>
+<meta name="description" content="Locked Away is a Barn Owl sculpture by Michael Cunningham Studio, inspired by the artist's favorite bird — with a heart-shaped lock and key at its center, left open to interpretation. Available for purchase or by commission.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<!-- INCLUDE:nav -->
+
+<section class="product-hero">
+  <div class="wrap">
+    <a class="back-link" href="../index.html#shop">&larr; Back to Gallery</a>
+    <div class="product-grid">
+      <div>
+        <div class="piece-gallery" data-gallery="locked-away-gallery">
+          <div class="slide">
+            <img src="../images/locked-away-hero.jpg" alt="Locked Away, a welded barn owl sculpture perched on a stone wall">
+            <span class="slide-zoom-hint" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#f7f2e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </span>
+          </div>
+          <div class="slide">
+            <img src="../images/locked-away-detail.jpg" alt="Close-up detail of Locked Away showing gear eyes, an antique lock, and key">
+            <span class="slide-zoom-hint" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#f7f2e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </span>
+          </div>
+        </div>
+        <div class="gallery-dots" data-gallery-nav="locked-away-gallery">
+          <button class="dot active" aria-label="Go to image 1"></button>
+          <button class="dot" aria-label="Go to image 2"></button>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Barn Owl Sculpture</div>
+        <h1 style="font-size:40px; margin-bottom:6px;">Locked Away</h1>
+        <div class="price-row">
+          <div class="price-tag">Price on request</div>
+          <span class="status-tag status-tag--sold">Sold</span>
+        </div>
+        <p style="color:var(--ink-soft); max-width:48ch; margin-bottom:30px;">The barn owl has always been my favorite bird — an animal that feels wrapped in as much myth as biology. In the wild, they nest in barns, silos, and hollow trees at the edge of open farmland, rarely seen except after dark, which is part of what makes them feel so mythical to begin with: long associated with wisdom, but just as often with mystery, watching from somewhere just out of sight. Locked Away began as a study of that owl — gear for feather, chain for down — but the heart-shaped lock and key tucked into its chest are the real center of the piece. What's being kept safe, or hidden, or held onto is left open. I have my own answer, but I suspect it means something a little different to everyone who stops to look.</p>
+        <div class="spec-list">
+          <div class="spec-row"><span>Dimensions</span><span>Shelf / fence-post scale</span></div>
+          <div class="spec-row"><span>Material</span><span>Steel, gears, chain</span></div>
+          <div class="spec-row"><span>Mount</span><span>Freestanding base</span></div>
+          <div class="spec-row"><span>Availability</span><span>Available</span></div>
+        </div>
+        <a class="purchase-btn" href="../index.html?item=Locked%20Away#contact">Purchase</a>
+        <div class="purchase-note">Checkout is handled by inquiry for now — this sends you to the contact form with this piece pre-filled.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" aria-label="Close image viewer">&times;</button>
+  <button class="lightbox-nav lightbox-prev" aria-label="Previous image">&larr;</button>
+  <button class="lightbox-nav lightbox-next" aria-label="Next image">&rarr;</button>
+  <div class="lightbox-stage">
+    <img src="" alt="" id="lightboxImg">
+  </div>
+  <div class="gallery-dots lightbox-dots" id="lightboxDots"></div>
+</div>
+
+<!-- INCLUDE:footer -->
+
+<script>
+  // Prefill the contact message if arriving from a product page's Purchase link
+  (function(){
+    const params = new URLSearchParams(window.location.search);
+    const item = params.get('item');
+    if (item) {
+      const msg = document.getElementById('message');
+      if (msg) msg.value = "I'm interested in purchasing: " + decodeURIComponent(item);
+    }
+  })();
+
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  function closeMenu(){
+    menuToggle.setAttribute('aria-expanded','false');
+    mobileMenu.classList.remove('open');
+    menuToggle.setAttribute('aria-label','Open menu');
+  }
+  function openMenu(){
+    menuToggle.setAttribute('aria-expanded','true');
+    mobileMenu.classList.add('open');
+    menuToggle.setAttribute('aria-label','Close menu');
+  }
+  menuToggle.addEventListener('click', ()=>{
+    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+    isOpen ? closeMenu() : openMenu();
+  });
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeMenu(); });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // Lightbox: full-size image viewer with easy exit
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxDots = document.getElementById('lightboxDots');
+  const lightboxClose = lightbox.querySelector('.lightbox-close');
+  const lightboxPrev = lightbox.querySelector('.lightbox-prev');
+  const lightboxNext = lightbox.querySelector('.lightbox-next');
+  let lightboxImages = [];
+  let lightboxIndex = 0;
+  let lightboxLastFocused = null;
+
+  function buildLightboxDots(count){
+    lightboxDots.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement('button');
+      b.className = 'dot';
+      b.setAttribute('aria-label', `Go to image ${i + 1}`);
+      b.addEventListener('click', ()=> showLightboxImage(i));
+      lightboxDots.appendChild(b);
+    }
+  }
+  function showLightboxImage(index){
+    lightboxIndex = (index + lightboxImages.length) % lightboxImages.length;
+    const item = lightboxImages[lightboxIndex];
+    lightboxImg.src = item.src;
+    lightboxImg.alt = item.alt;
+    Array.from(lightboxDots.children).forEach((d,i)=>d.classList.toggle('active', i === lightboxIndex));
+  }
+  function openLightbox(images, index){
+    lightboxImages = images;
+    lightboxLastFocused = document.activeElement;
+    buildLightboxDots(images.length);
+    showLightboxImage(index);
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    lightboxClose.focus();
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lightboxLastFocused) lightboxLastFocused.focus();
+  }
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', ()=> showLightboxImage(lightboxIndex - 1));
+  lightboxNext.addEventListener('click', ()=> showLightboxImage(lightboxIndex + 1));
+  lightbox.addEventListener('click', (e)=>{ if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e)=>{
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showLightboxImage(lightboxIndex - 1);
+    if (e.key === 'ArrowRight') showLightboxImage(lightboxIndex + 1);
+  });
+
+  // Side-scrolling piece gallery with dot indicator
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.piece-gallery').forEach(gallery=>{
+    const galleryId = gallery.dataset.gallery;
+    const slides = Array.from(gallery.querySelectorAll('.slide'));
+    const dotsWrap = document.querySelector(`.gallery-dots[data-gallery-nav="${galleryId}"]`);
+    const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.dot')) : [];
+    const images = slides.map(s=>{
+      const img = s.querySelector('img');
+      return { src: img.src, alt: img.alt };
+    });
+
+    function setActive(index){
+      dots.forEach((d,i)=>d.classList.toggle('active', i === index));
+    }
+
+    function closestSlideIndex(){
+      const galleryRect = gallery.getBoundingClientRect();
+      const galleryCenter = galleryRect.left + galleryRect.width / 2;
+      let closest = 0, closestDist = Infinity;
+      slides.forEach((s,i)=>{
+        const r = s.getBoundingClientRect();
+        const dist = Math.abs((r.left + r.width / 2) - galleryCenter);
+        if (dist < closestDist) { closestDist = dist; closest = i; }
+      });
+      return closest;
+    }
+
+    let ticking = false;
+    gallery.addEventListener('scroll', ()=>{
+      if (!ticking) {
+        requestAnimationFrame(()=>{ setActive(closestSlideIndex()); ticking = false; });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    dots.forEach((dot,i)=>{
+      dot.addEventListener('click', ()=>{
+        slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+      });
+    });
+
+    // Click / tap a slide to open the lightbox
+    slides.forEach((slide,i)=>{
+      slide.addEventListener('click', ()=>{
+        if (dragMoved) { dragMoved = false; return; }
+        openLightbox(images, i);
+      });
+    });
+
+    // Desktop drag-to-scroll (mice have no native horizontal scroll)
+    let isDown = false, startX = 0, startScroll = 0, dragMoved = false;
+    gallery.addEventListener('pointerdown', (e)=>{
+      isDown = true;
+      dragMoved = false;
+      gallery.classList.add('dragging');
+      startX = e.clientX;
+      startScroll = gallery.scrollLeft;
+      gallery.setPointerCapture(e.pointerId);
+    });
+    gallery.addEventListener('pointermove', (e)=>{
+      if (!isDown) return;
+      if (Math.abs(e.clientX - startX) > 5) dragMoved = true;
+      gallery.scrollLeft = startScroll - (e.clientX - startX);
+    });
+    function endDrag(){
+      if (!isDown) return;
+      isDown = false;
+      gallery.classList.remove('dragging');
+      const nearest = closestSlideIndex();
+      slides[nearest].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+    }
+    gallery.addEventListener('pointerup', endDrag);
+    gallery.addEventListener('pointerleave', endDrag);
+  });
+</script>
+
+</body>
+</html>
