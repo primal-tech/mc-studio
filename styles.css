@@ -774,25 +774,20 @@ footer{
 /* Zoom hint overlay on gallery slides (click/tap to enlarge) */
 .piece-gallery .slide{ position:relative; }
 .slide-zoom-hint{
-  position:absolute;
-  bottom:14px;
-  right:14px;
-  display:inline-flex;
+  display:flex;
   align-items:center;
+  justify-content:center;
   gap:6px;
-  background:rgba(20,16,12,0.6);
-  color:#f7f2e8;
-  padding:7px 12px 7px 10px;
-  border-radius:999px;
+  margin-top:10px;
+  color:var(--ink-soft);
   font-family:'EB Garamond', serif;
   font-size:12px;
   letter-spacing:0.08em;
   text-transform:uppercase;
-  pointer-events:none;
 }
 .slide-zoom-hint svg{
-  width:15px;
-  height:15px;
+  width:14px;
+  height:14px;
   flex-shrink:0;
 }
 
