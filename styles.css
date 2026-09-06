@@ -343,6 +343,28 @@ nav a.nav-cta:hover, nav a.nav-cta:focus-visible{
   font-size:15px;
 }
 .spec-row span:first-child{color:var(--ink-soft); letter-spacing:0.06em; text-transform:uppercase; font-size:12px;}
+.info-notes{
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.info-note-label{
+  display:block;
+  font-size:12px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:4px;
+}
+.info-note p{
+  font-size:14px;
+  color:var(--ink-soft);
+  margin:0;
+  max-width:48ch;
+}
 
 /* gallery grid */
 .grid-2{
