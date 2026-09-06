@@ -775,20 +775,25 @@ footer{
 .piece-gallery .slide{ position:relative; }
 .slide-zoom-hint{
   position:absolute;
-  inset:0;
-  display:flex;
+  bottom:14px;
+  right:14px;
+  display:inline-flex;
   align-items:center;
-  justify-content:center;
-  background:rgba(20,16,12,0.12);
-  opacity:0;
-  transition:opacity .25s;
+  gap:6px;
+  background:rgba(20,16,12,0.6);
+  color:#f7f2e8;
+  padding:7px 12px 7px 10px;
+  border-radius:999px;
+  font-family:'EB Garamond', serif;
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
   pointer-events:none;
 }
-.piece-gallery .slide:hover .slide-zoom-hint{ opacity:1; }
 .slide-zoom-hint svg{
-  width:36px;
-  height:36px;
-  filter:drop-shadow(0 2px 8px rgba(0,0,0,.45));
+  width:15px;
+  height:15px;
+  flex-shrink:0;
 }
 
 /* Lightbox: full-screen image viewer with easy exit */
