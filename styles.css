@@ -659,6 +659,14 @@ footer{
   font-size:26px;
   margin:0 0 6px;
 }
+.piece-species{
+  display:block;
+  font-family:'Playfair Display', serif;
+  font-style:italic;
+  font-size:14px;
+  color:var(--ink-soft);
+  margin:0 0 10px;
+}
 .gallery-caption .see-more{
   display:inline-flex;
   align-items:center;
