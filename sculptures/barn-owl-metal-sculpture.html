@@ -7,7 +7,7 @@
 <meta name="description" content="Locked Away is a Barn Owl sculpture by Michael Cunningham Studio, inspired by the artist's favorite bird — with a heart-shaped lock and key at its center, left open to interpretation. Available for purchase or by commission.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=f00d2ac6">
+<link rel="stylesheet" href="../styles.css?v=f12c531a">
 </head>
 <body>
 
@@ -173,6 +173,7 @@
     lightboxImg.src = item.src;
     lightboxImg.alt = item.alt;
     Array.from(lightboxDots.children).forEach((d,i)=>d.classList.toggle('active', i === lightboxIndex));
+    lbResetZoom();
   }
   function openLightbox(images, index){
     lightboxImages = images;
@@ -188,6 +189,7 @@
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    lbResetZoom();
     if (lightboxLastFocused) lightboxLastFocused.focus();
   }
   lightboxClose.addEventListener('click', closeLightbox);
@@ -201,33 +203,88 @@
     if (e.key === 'ArrowRight') showLightboxImage(lightboxIndex + 1);
   });
 
-  // Swipe to navigate between images in the lightbox
+  // Lightbox gestures: swipe to navigate, pinch to zoom, drag to pan when zoomed
   const lightboxStage = lightbox.querySelector('.lightbox-stage');
-  let lbStartX = 0, lbStartY = 0, lbDragging = false, lbSwiped = false;
+  let lbScale = 1, lbTx = 0, lbTy = 0;
+  const lbPointers = new Map();
+  let lbPinchStartDist = null, lbPinchStartScale = 1;
+  let lbPanning = false, lbLastPanX = 0, lbLastPanY = 0;
+  let lbStartX = 0, lbStartY = 0, lbMoved = false;
+  let lbLastTapTime = 0;
+
+  function lbApplyTransform(){
+    lightboxImg.style.transform = `translate(${lbTx}px, ${lbTy}px) scale(${lbScale})`;
+    lightboxImg.classList.toggle('zoomed', lbScale > 1.02);
+  }
+  function lbResetZoom(){
+    lbScale = 1; lbTx = 0; lbTy = 0;
+    lightboxImg.style.transform = '';
+    lightboxImg.classList.remove('zoomed');
+  }
+  function lbDist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
+
   lightboxStage.addEventListener('pointerdown', (e)=>{
-    lbDragging = true;
-    lbSwiped = false;
-    lbStartX = e.clientX;
-    lbStartY = e.clientY;
+    lbPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    lightboxStage.setPointerCapture(e.pointerId);
+    if (lbPointers.size === 1) {
+      lbStartX = e.clientX; lbStartY = e.clientY; lbMoved = false;
+      if (lbScale > 1) { lbPanning = true; lbLastPanX = e.clientX; lbLastPanY = e.clientY; }
+    } else if (lbPointers.size === 2) {
+      lbPanning = false;
+      const pts = Array.from(lbPointers.values());
+      lbPinchStartDist = lbDist(pts[0], pts[1]);
+      lbPinchStartScale = lbScale;
+    }
   });
   lightboxStage.addEventListener('pointermove', (e)=>{
-    if (!lbDragging) return;
-    if (Math.abs(e.clientX - lbStartX) > 10) lbSwiped = true;
+    if (!lbPointers.has(e.pointerId)) return;
+    lbPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (lbPointers.size === 2 && lbPinchStartDist) {
+      const pts = Array.from(lbPointers.values());
+      const dist = lbDist(pts[0], pts[1]);
+      lbScale = Math.min(4, Math.max(1, lbPinchStartScale * (dist / lbPinchStartDist)));
+      lbApplyTransform();
+    } else if (lbPointers.size === 1) {
+      if (lbScale > 1 && lbPanning) {
+        const dx = e.clientX - lbLastPanX, dy = e.clientY - lbLastPanY;
+        lbLastPanX = e.clientX; lbLastPanY = e.clientY;
+        lbTx += dx / lbScale; lbTy += dy / lbScale;
+        lbApplyTransform();
+      } else if (Math.abs(e.clientX - lbStartX) > 10) {
+        lbMoved = true;
+      }
+    }
   });
-  function endLightboxSwipe(e){
-    if (!lbDragging) return;
-    lbDragging = false;
-    const dx = e.clientX - lbStartX;
-    const dy = e.clientY - lbStartY;
-    // Ignore mostly-vertical drags so it doesn't fight scrolling/closing
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-      showLightboxImage(lightboxIndex + (dx < 0 ? 1 : -1));
+  function lbEndPointer(e){
+    lbPointers.delete(e.pointerId);
+    if (lbPointers.size < 2) lbPinchStartDist = null;
+    if (lbPointers.size === 0) {
+      lbPanning = false;
+      if (lbScale <= 1) {
+        const dx = e.clientX - lbStartX, dy = e.clientY - lbStartY;
+        if (!lbMoved) {
+          const now = Date.now();
+          if (now - lbLastTapTime < 300) {
+            lbScale = 2.5; lbApplyTransform(); lbLastTapTime = 0;
+          } else {
+            lbLastTapTime = now;
+          }
+        } else if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+          showLightboxImage(lightboxIndex + (dx < 0 ? 1 : -1));
+        }
+      } else if (lbScale <= 1.02) {
+        lbScale = 1; lbTx = 0; lbTy = 0; lbApplyTransform();
+      }
     }
   }
-  lightboxStage.addEventListener('pointerup', endLightboxSwipe);
-  lightboxStage.addEventListener('pointercancel', ()=>{ lbDragging = false; });
+  lightboxStage.addEventListener('pointerup', lbEndPointer);
+  lightboxStage.addEventListener('pointercancel', lbEndPointer);
+  // Double-click to zoom for mouse/trackpad users (touch handled above via tap timing)
+  lightboxStage.addEventListener('dblclick', ()=>{
+    if (lbScale > 1) { lbScale = 1; lbTx = 0; lbTy = 0; } else { lbScale = 2.5; }
+    lbApplyTransform();
+  });
   // Prevent the swipe from also being read as a "click outside to close"
-  lightboxStage.addEventListener('click', (e)=>{ if (lbSwiped) e.stopPropagation(); });
 
   // Side-scrolling piece gallery with dot indicator
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

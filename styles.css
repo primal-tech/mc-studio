@@ -852,7 +852,14 @@ footer{
   display:flex;
   align-items:center;
   justify-content:center;
-  touch-action:pan-y;
+  touch-action:none;
+}
+.lightbox-stage img{
+  transform-origin:center center;
+  cursor:zoom-in;
+}
+.lightbox-stage img.zoomed{
+  cursor:grab;
 }
 .lightbox-stage img{
   max-width:88vw;
