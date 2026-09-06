@@ -15,7 +15,6 @@
   <a href="" class="brand">Michael Cunningham <span class="brand-script">Studio</span></a>
   <ul>
     <li><a href="#shop">Gallery</a></li>
-    <li><a href="#progress">Progress</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#commission" class="nav-cta">Commission</a></li>
@@ -27,7 +26,6 @@
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="#shop">Gallery</a>
-  <a href="#progress">Progress</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
   <a href="#commission" class="nav-cta">Commission</a>
@@ -86,40 +84,6 @@
           </span>
         </div>
       </a>
-    </div>
-  </div>
-</section>
-
-<section id="progress">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <div class="eyebrow" style="justify-content:center;">In the Studio</div>
-      <h2>Works in Progress</h2>
-      <p>A running look at what's on the welding table right now, updated as pieces move from armature to finish.</p>
-    </div>
-    <div class="progress-gallery-wrap reveal">
-      <div class="piece-gallery progress-gallery" data-gallery="progress-gallery">
-        <div class="slide progress-card">
-          <div class="progress-photo">Photo placeholder</div>
-          <p class="progress-caption">Swap in a progress shot and a line about what's happening in it.</p>
-        </div>
-        <div class="slide progress-card">
-          <div class="progress-photo">Photo placeholder</div>
-          <p class="progress-caption">Swap in a progress shot and a line about what's happening in it.</p>
-        </div>
-        <div class="slide progress-card">
-          <div class="progress-photo">Photo placeholder</div>
-          <p class="progress-caption">Swap in a progress shot and a line about what's happening in it.</p>
-        </div>
-      </div>
-      <div class="gallery-dots" data-gallery-nav="progress-gallery">
-        <button class="dot active" aria-label="Go to image 1"></button>
-        <button class="dot" aria-label="Go to image 2"></button>
-        <button class="dot" aria-label="Go to image 3"></button>
-      </div>
-    </div>
-    <div style="text-align:center; margin-top:50px;">
-      <a class="commission-cta" href="https://www.instagram.com/" target="_blank" rel="noopener">Follow Along on Instagram</a>
     </div>
   </div>
 </section>
@@ -291,68 +255,6 @@
     window.addEventListener('resize', onTimelineScroll);
     update();
   })();
-
-  // Side-scrolling "Works in Progress" gallery with dot indicator
-  // (same drag/snap/dots mechanics as the product page image viewers)
-  document.querySelectorAll('[data-gallery]').forEach(gallery=>{
-    const galleryId = gallery.dataset.gallery;
-    const slides = Array.from(gallery.querySelectorAll('.slide'));
-    const dotsWrap = document.querySelector(`.gallery-dots[data-gallery-nav="${galleryId}"]`);
-    const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.dot')) : [];
-
-    function setActive(index){
-      dots.forEach((d,i)=>d.classList.toggle('active', i === index));
-    }
-
-    function closestSlideIndex(){
-      const galleryRect = gallery.getBoundingClientRect();
-      const galleryCenter = galleryRect.left + galleryRect.width / 2;
-      let closest = 0, closestDist = Infinity;
-      slides.forEach((s,i)=>{
-        const r = s.getBoundingClientRect();
-        const dist = Math.abs((r.left + r.width / 2) - galleryCenter);
-        if (dist < closestDist) { closestDist = dist; closest = i; }
-      });
-      return closest;
-    }
-
-    let ticking = false;
-    gallery.addEventListener('scroll', ()=>{
-      if (!ticking) {
-        requestAnimationFrame(()=>{ setActive(closestSlideIndex()); ticking = false; });
-        ticking = true;
-      }
-    }, { passive: true });
-
-    dots.forEach((dot,i)=>{
-      dot.addEventListener('click', ()=>{
-        slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
-      });
-    });
-
-    // Desktop drag-to-scroll (mice have no native horizontal scroll)
-    let isDown = false, startX = 0, startScroll = 0;
-    gallery.addEventListener('pointerdown', (e)=>{
-      isDown = true;
-      gallery.classList.add('dragging');
-      startX = e.clientX;
-      startScroll = gallery.scrollLeft;
-      gallery.setPointerCapture(e.pointerId);
-    });
-    gallery.addEventListener('pointermove', (e)=>{
-      if (!isDown) return;
-      gallery.scrollLeft = startScroll - (e.clientX - startX);
-    });
-    function endDrag(){
-      if (!isDown) return;
-      isDown = false;
-      gallery.classList.remove('dragging');
-      const nearest = closestSlideIndex();
-      slides[nearest].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
-    }
-    gallery.addEventListener('pointerup', endDrag);
-    gallery.addEventListener('pointerleave', endDrag);
-  });
 </script>
 
 </body>

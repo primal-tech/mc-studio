@@ -696,34 +696,6 @@ footer{
 }
 
 /* ------------------------------------------------------------
-   Works in Progress section (index.html)
-   ------------------------------------------------------------ */
-.progress-gallery-wrap{ max-width:700px; margin:0 auto; }
-.progress-gallery{
-  background:none;
-  border:none;
-}
-.progress-card{ text-align:center; }
-.progress-photo{
-  background:var(--bg-panel);
-  border:1px solid var(--cream-line);
-  aspect-ratio:16/9;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:18px;
-  color:var(--ink-soft);
-  font-size:13px;
-  letter-spacing:0.06em;
-}
-.progress-caption{
-  color:var(--ink-soft);
-  font-size:15px;
-  max-width:32ch;
-  margin:0 auto;
-}
-
-/* ------------------------------------------------------------
    Product detail pages only
    (sculptures/hawk-metal-sculpture.html,
    sculptures/barn-owl-metal-sculpture.html)
