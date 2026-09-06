@@ -338,11 +338,14 @@ nav a.nav-cta:hover, nav a.nav-cta:focus-visible{
 .spec-row{
   display:flex;
   justify-content:space-between;
+  align-items:flex-start;
+  gap:20px;
   padding:14px 0;
   border-bottom:1px solid var(--line);
   font-size:15px;
 }
-.spec-row span:first-child{color:var(--ink-soft); letter-spacing:0.06em; text-transform:uppercase; font-size:12px;}
+.spec-row span:first-child{color:var(--ink-soft); letter-spacing:0.06em; text-transform:uppercase; font-size:12px; flex-shrink:0;}
+.spec-row span:last-child{text-align:right;}
 .info-notes{
   margin-top:24px;
   padding-top:20px;
@@ -657,6 +660,8 @@ footer{
   text-transform:uppercase;
   white-space:nowrap;
   line-height:1;
+  padding:6px 11px 6px 9px;
+  border-radius:4px;
 }
 .status-tag::before{
   content:'';
@@ -666,8 +671,8 @@ footer{
   background:currentColor;
   flex-shrink:0;
 }
-.status-tag--available{ color:var(--brass-deep); }
-.status-tag--sold{ color:var(--ink-soft); }
+.status-tag--available{ color:var(--brass-deep); background:rgba(98,70,42,0.09); }
+.status-tag--sold{ color:var(--ink-soft); background:rgba(116,105,92,0.09); }
 .parallax-layer{
   position:absolute;
   top:-10%;
