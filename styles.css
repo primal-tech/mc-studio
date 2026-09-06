@@ -100,12 +100,6 @@ nav{
   font-family:inherit;
   color:var(--brass-deep);
 }
-.brand-key{
-  vertical-align:middle;
-  margin-left:5px;
-  margin-top:-2px;
-  color:var(--brass-deep);
-}
 nav ul{
   list-style:none;
   display:flex;
