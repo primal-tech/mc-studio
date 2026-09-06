@@ -7,7 +7,7 @@
 <meta name="description" content="Nature and wildlife sculpture by Michael Cunningham Studio — each piece inspired by an animal watched closely, then welded into steel to hold its moment. Available for purchase or by commission from Chester Springs, PA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=3c9f5a95">
+<link rel="stylesheet" href="styles.css?v=43c02007">
 </head>
 <body>
 
@@ -38,15 +38,7 @@
       <h2>Gallery</h2>
     </div>
 
-    <div class="gallery-timeline" id="galleryTimeline">
-      <div class="timeline-rail" aria-hidden="true">
-        <div class="timeline-rail-fill" id="timelineFill"></div>
-      </div>
-
-      <div class="timeline-marker" data-timeline-marker>
-        <span class="timeline-year">July 2026</span>
-        <span class="timeline-dot" data-timeline-dot></span>
-      </div>
+    <div class="gallery-list">
       <a class="gallery-card reveal" href="sculptures/hawk-metal-sculpture.html">
         <div class="gallery-media">
           <div class="parallax-layer" data-parallax>
@@ -56,7 +48,10 @@
         <div class="gallery-caption">
           <div>
             <h3>Sentinel</h3>
-            <span class="status-tag status-tag--available">Available</span>
+            <div class="piece-meta">
+              <span class="status-tag status-tag--available">Available</span>
+              <span class="piece-date">July 2026</span>
+            </div>
           </div>
           <span class="see-more">See more
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
@@ -64,10 +59,6 @@
         </div>
       </a>
 
-      <div class="timeline-marker" data-timeline-marker>
-        <span class="timeline-year">May 2026</span>
-        <span class="timeline-dot" data-timeline-dot></span>
-      </div>
       <a class="gallery-card reveal" href="sculptures/barn-owl-metal-sculpture.html">
         <div class="gallery-media">
           <div class="parallax-layer" data-parallax>
@@ -77,7 +68,10 @@
         <div class="gallery-caption">
           <div>
             <h3>Locked Away</h3>
-            <span class="status-tag status-tag--sold">Sold</span>
+            <div class="piece-meta">
+              <span class="status-tag status-tag--sold">Sold</span>
+              <span class="piece-date">May 2026</span>
+            </div>
           </div>
           <span class="see-more">See more
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
@@ -232,39 +226,6 @@
     window.addEventListener('resize', onScroll);
     updateParallax();
   }
-
-  // Gallery timeline: rail fill + active dots track scroll position
-  (function(){
-    const container = document.getElementById('galleryTimeline');
-    const fill = document.getElementById('timelineFill');
-    if (!container || !fill) return;
-    const markers = Array.from(container.querySelectorAll('[data-timeline-marker]'));
-
-    function update(){
-      const rect = container.getBoundingClientRect();
-      const anchor = window.innerHeight * 0.5;
-      const progress = Math.max(0, Math.min(1, (anchor - rect.top) / rect.height));
-      fill.style.height = (progress * 100) + '%';
-      markers.forEach(marker=>{
-        const mRect = marker.getBoundingClientRect();
-        const passed = (mRect.top + mRect.height / 2) <= anchor;
-        marker.classList.toggle('active', passed);
-        const dot = marker.querySelector('[data-timeline-dot]');
-        if (dot) dot.classList.toggle('active', passed);
-      });
-    }
-
-    let ticking = false;
-    function onTimelineScroll(){
-      if (!ticking) {
-        requestAnimationFrame(()=>{ update(); ticking = false; });
-        ticking = true;
-      }
-    }
-    window.addEventListener('scroll', onTimelineScroll, {passive:true});
-    window.addEventListener('resize', onTimelineScroll);
-    update();
-  })();
 </script>
 
 </body>
