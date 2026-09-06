@@ -14,6 +14,8 @@
   --brass-deep: #62462a;
   --line: #ddd0ba;
   --cream-line: #e5dac2;
+  --status-available: #52684a;
+  --status-sold: #9c4a3d;
 }
 *{box-sizing:border-box;}
 a, button{ -webkit-tap-highlight-color:transparent; }
@@ -679,8 +681,8 @@ footer{
   background:currentColor;
   flex-shrink:0;
 }
-.status-tag--available{ color:var(--brass-deep); background:rgba(98,70,42,0.09); }
-.status-tag--sold{ color:var(--ink-soft); background:rgba(116,105,92,0.09); }
+.status-tag--available{ color:var(--status-available); background:rgba(82,104,74,0.11); }
+.status-tag--sold{ color:var(--status-sold); background:rgba(156,74,61,0.1); }
 .parallax-layer{
   position:absolute;
   top:-10%;
