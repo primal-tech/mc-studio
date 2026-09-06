@@ -138,9 +138,13 @@
   (function(){
     const params = new URLSearchParams(window.location.search);
     const item = params.get('item');
+    const commission = params.get('commission');
     if (item) {
       const msg = document.getElementById('message');
       if (msg) msg.value = "I'm interested in purchasing: " + decodeURIComponent(item);
+    } else if (commission) {
+      const msg = document.getElementById('message');
+      if (msg) msg.value = "I'm interested in a commission similar to: " + decodeURIComponent(commission);
     }
   })();
 
