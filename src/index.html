@@ -76,7 +76,7 @@
       <div class="eyebrow">Commission</div>
       <h2>Works available by commission</h2>
       <p>New work is available by commission. Contact me with questions about the subject matter, size, timeline, and price. Each custom piece is one of a kind.</p>
-      <a class="commission-cta" href="#contact">Start a Commission Inquiry</a>
+      <a class="commission-cta" href="#contact" onclick="var m=document.getElementById('message'); if(m) m.value='';">Start a Commission Inquiry</a>
     </div>
   </div>
 </section>
@@ -139,12 +139,14 @@
     const params = new URLSearchParams(window.location.search);
     const item = params.get('item');
     const commission = params.get('commission');
+    const msg = document.getElementById('message');
+    if (!msg) return;
     if (item) {
-      const msg = document.getElementById('message');
-      if (msg) msg.value = "I'm interested in purchasing: " + decodeURIComponent(item);
+      msg.value = "I'm interested in purchasing: " + decodeURIComponent(item);
     } else if (commission) {
-      const msg = document.getElementById('message');
-      if (msg) msg.value = "I'm interested in a commission similar to: " + decodeURIComponent(commission);
+      msg.value = "I'm interested in a commission similar to: " + decodeURIComponent(commission);
+    } else {
+      msg.value = '';
     }
   })();
 
