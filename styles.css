@@ -436,9 +436,16 @@ nav a.nav-cta:hover, nav a.nav-cta:focus-visible{
 #contact .wrap{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:70px;
+  column-gap:70px;
+  row-gap:24px;
 }
-@media (max-width:800px){ #contact .wrap{grid-template-columns:1fr;} }
+@media (max-width:800px){
+  #contact .wrap{
+    grid-template-columns:1fr;
+    row-gap:0;
+  }
+}
+#contact .sec-head{ margin-bottom:24px; }
 form{display:flex; flex-direction:column; gap:20px;}
 label{
   font-size:12px;
