@@ -292,7 +292,8 @@ nav a.nav-cta:hover, nav a.nav-cta:focus-visible{
 }
 .piece-gallery .slide img{
   width:100%;
-  height:auto;
+  aspect-ratio:3/4;
+  object-fit:cover;
   display:block;
   pointer-events:none;
 }
