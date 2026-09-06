@@ -195,6 +195,34 @@
     if (e.key === 'ArrowRight') showLightboxImage(lightboxIndex + 1);
   });
 
+  // Swipe to navigate between images in the lightbox
+  const lightboxStage = lightbox.querySelector('.lightbox-stage');
+  let lbStartX = 0, lbStartY = 0, lbDragging = false, lbSwiped = false;
+  lightboxStage.addEventListener('pointerdown', (e)=>{
+    lbDragging = true;
+    lbSwiped = false;
+    lbStartX = e.clientX;
+    lbStartY = e.clientY;
+  });
+  lightboxStage.addEventListener('pointermove', (e)=>{
+    if (!lbDragging) return;
+    if (Math.abs(e.clientX - lbStartX) > 10) lbSwiped = true;
+  });
+  function endLightboxSwipe(e){
+    if (!lbDragging) return;
+    lbDragging = false;
+    const dx = e.clientX - lbStartX;
+    const dy = e.clientY - lbStartY;
+    // Ignore mostly-vertical drags so it doesn't fight scrolling/closing
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+      showLightboxImage(lightboxIndex + (dx < 0 ? 1 : -1));
+    }
+  }
+  lightboxStage.addEventListener('pointerup', endLightboxSwipe);
+  lightboxStage.addEventListener('pointercancel', ()=>{ lbDragging = false; });
+  // Prevent the swipe from also being read as a "click outside to close"
+  lightboxStage.addEventListener('click', (e)=>{ if (lbSwiped) e.stopPropagation(); });
+
   // Side-scrolling piece gallery with dot indicator
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll('.piece-gallery').forEach(gallery=>{

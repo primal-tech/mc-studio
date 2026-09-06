@@ -852,6 +852,7 @@ footer{
   display:flex;
   align-items:center;
   justify-content:center;
+  touch-action:pan-y;
 }
 .lightbox-stage img{
   max-width:88vw;
