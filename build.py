@@ -14,6 +14,7 @@ After editing src/partials/nav.html or src/partials/footer.html,
 or any page under src/, just re-run this script and re-deploy.
 """
 
+import hashlib
 import re
 from pathlib import Path
 
@@ -40,7 +41,15 @@ def load_partial(name: str, home_prefix: str = None) -> str:
     return text
 
 
-def build_page(src_path: Path, out_path: Path, home_prefix: str) -> None:
+def css_version() -> str:
+    """Short hash of styles.css so every content change busts the cache
+    automatically, without anyone needing to remember to bump a version
+    number by hand."""
+    data = (ROOT / "styles.css").read_bytes()
+    return hashlib.sha256(data).hexdigest()[:8]
+
+
+def build_page(src_path: Path, out_path: Path, home_prefix: str, version: str) -> None:
     content = src_path.read_text()
 
     nav = load_partial("nav", home_prefix)
@@ -48,6 +57,11 @@ def build_page(src_path: Path, out_path: Path, home_prefix: str) -> None:
 
     content = content.replace("<!-- INCLUDE:nav -->", nav)
     content = content.replace("<!-- INCLUDE:footer -->", footer)
+    content = re.sub(
+        r'(href="[^"]*styles\.css)(")',
+        rf'\1?v={version}\2',
+        content,
+    )
 
     remaining = re.findall(r"<!-- INCLUDE:\w+ -->", content)
     if remaining:
@@ -59,9 +73,10 @@ def build_page(src_path: Path, out_path: Path, home_prefix: str) -> None:
 
 
 def main():
+    version = css_version()
     for src_path, out_path, home_prefix in PAGES:
-        build_page(src_path, out_path, home_prefix)
-    print("done.")
+        build_page(src_path, out_path, home_prefix, version)
+    print(f"done. (styles.css cache-bust version: {version})")
 
 
 if __name__ == "__main__":
