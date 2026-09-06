@@ -123,10 +123,13 @@ nav a:hover, nav a:focus-visible{
   border-color:var(--brass);
 }
 nav a.nav-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
   border:1px solid var(--brass-deep);
   color:var(--brass-deep);
-  padding:8px 18px;
-  border-radius:1px;
+  padding:8px 16px 8px 18px;
+  border-radius:999px;
   transition:background .25s, color .25s;
 }
 nav a.nav-cta:hover, nav a.nav-cta:focus-visible{
@@ -134,12 +137,18 @@ nav a.nav-cta:hover, nav a.nav-cta:focus-visible{
   color:var(--bg);
   border-color:var(--brass-deep);
 }
+nav a.nav-cta svg{ transition:transform .25s ease; }
+nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3px); }
 .mobile-menu a.nav-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
   font-size:20px;
   font-style:normal;
   border:1px solid var(--brass-deep);
   color:var(--brass-deep);
-  padding:12px 30px;
+  border-radius:999px;
+  padding:12px 26px 12px 30px;
 }
 .hamburger{
   display:none;
@@ -478,10 +487,14 @@ button:focus-visible, a:focus-visible{
 textarea{resize:vertical; min-height:110px;}
 button{
   align-self:flex-start;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
   background:none;
   border:1px solid var(--brass-deep);
+  border-radius:999px;
   color:var(--brass-deep);
-  padding:13px 30px;
+  padding:13px 26px 13px 30px;
   font-family:'EB Garamond', serif;
   font-size:14px;
   letter-spacing:0.12em;
@@ -491,6 +504,8 @@ button{
   margin-top:6px;
 }
 button:hover{background:var(--brass-deep); color:var(--bg);}
+button svg{ transition:transform .25s ease; }
+button:hover svg, button:focus-visible svg{ transform:translateX(3px); }
 .contact-info .row{
   display:flex;
   justify-content:space-between;
@@ -508,12 +523,15 @@ button:hover{background:var(--brass-deep); color:var(--bg);}
 #commission h2{font-size:clamp(30px,4vw,44px); max-width:16ch; margin:0 auto;}
 #commission p{color:var(--ink-soft); max-width:56ch; margin:22px auto 0; font-size:18px;}
 .commission-cta{
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
   margin-top:38px;
   border:1px solid var(--brass-deep);
+  border-radius:999px;
   color:var(--brass-deep);
   text-decoration:none;
-  padding:14px 34px;
+  padding:14px 30px 14px 34px;
   font-size:14px;
   letter-spacing:0.12em;
   text-transform:uppercase;
@@ -523,6 +541,8 @@ button:hover{background:var(--brass-deep); color:var(--bg);}
   background:var(--brass-deep);
   color:var(--bg);
 }
+.commission-cta svg{ transition:transform .25s ease; }
+.commission-cta:hover svg, .commission-cta:focus-visible svg{ transform:translateX(3px); }
 
 footer{
   padding:40px;
@@ -750,12 +770,15 @@ footer{
   margin:18px 0 26px;
 }
 .purchase-btn{
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
   margin-top:30px;
   background:var(--brass-deep);
   color:var(--bg);
   border:1px solid var(--brass-deep);
-  padding:15px 34px;
+  border-radius:999px;
+  padding:15px 30px 15px 34px;
   font-family:'EB Garamond', serif;
   font-size:15px;
   letter-spacing:0.1em;
@@ -764,6 +787,8 @@ footer{
   transition:opacity .25s;
 }
 .purchase-btn:hover{ opacity:0.85; }
+.purchase-btn svg{ transition:transform .25s ease; }
+.purchase-btn:hover svg, .purchase-btn:focus-visible svg{ transform:translateX(3px); }
 .purchase-note{
   margin-top:14px;
   font-size:13px;
