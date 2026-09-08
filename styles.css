@@ -769,6 +769,9 @@ footer{
   color:var(--brass-deep);
   margin:18px 0 26px;
 }
+.price-tag--sold{
+  color:var(--ink-soft);
+}
 .purchase-btn{
   display:inline-flex;
   align-items:center;
