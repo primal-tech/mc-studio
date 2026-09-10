@@ -194,12 +194,29 @@
       let pinchStartDist = null, pinchStartScale = 1;
       let panning = false, lastPanX = 0, lastPanY = 0;
       let lastTapTime = 0;
+      let rafPending = false;
 
-      function apply(){
+      function clampPan(){
+        // Don't let the zoomed image be dragged past showing empty
+        // space beyond its own edges.
+        const rect = slide.getBoundingClientRect();
+        const maxX = (rect.width * (scale - 1)) / 2;
+        const maxY = (rect.height * (scale - 1)) / 2;
+        tx = Math.max(-maxX, Math.min(maxX, tx));
+        ty = Math.max(-maxY, Math.min(maxY, ty));
+      }
+      function applyNow(){
+        clampPan();
         img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
         const zoomed = scale > 1.02;
         img.classList.toggle('zoomed', zoomed);
         slide.classList.toggle('zoomed', zoomed);
+        rafPending = false;
+      }
+      function apply(){
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(applyNow);
       }
       function reset(){
         scale = 1; tx = 0; ty = 0;
@@ -235,7 +252,7 @@
         } else if (pointers.size === 1 && panning && scale > 1) {
           const dx = e.clientX - lastPanX, dy = e.clientY - lastPanY;
           lastPanX = e.clientX; lastPanY = e.clientY;
-          tx += dx / scale; ty += dy / scale;
+          tx += dx; ty += dy;
           apply();
         }
       });
