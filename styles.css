@@ -369,7 +369,7 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
 }
 @media (min-width:700px){
   .about-grid{
-    grid-template-columns:220px 1fr;
+    grid-template-columns:160px 1fr;
     gap:48px;
     max-width:none;
     align-items:start;
@@ -380,7 +380,7 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
   background:var(--bg);
   aspect-ratio:4/5;
   overflow:hidden;
-  max-width:320px;
+  max-width:160px;
   margin:0 auto;
 }
 @media (min-width:700px){
