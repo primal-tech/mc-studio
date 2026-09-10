@@ -308,6 +308,28 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
   display:block;
   pointer-events:none;
 }
+/* Mobile: break the gallery out to the screen edges and let each
+   photo fill the full viewport width, taller crop, no framed panel.
+   Desktop keeps the contained, framed look above this breakpoint. */
+@media (max-width:860px){
+  .product-grid .piece-gallery{
+    margin-left:-40px;
+    margin-right:-40px;
+    width:calc(100% + 80px);
+    gap:0;
+    background:none;
+    border:none;
+    border-radius:0;
+    padding:0;
+    scroll-padding-left:0;
+  }
+  .product-grid .piece-gallery .slide{
+    flex:0 0 100%;
+  }
+  .product-grid .piece-gallery .slide img{
+    aspect-ratio:2/3;
+  }
+}
 .gallery-dots{
   display:flex;
   justify-content:center;
