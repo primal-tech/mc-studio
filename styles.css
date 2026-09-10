@@ -90,7 +90,10 @@ nav{
   color:inherit;
 }
 .brand-script{
-  font-family:inherit;
+  font-family:'Allura', cursive;
+  font-size:1.6em;
+  text-transform:none;
+  letter-spacing:normal;
   color:var(--brass-deep);
 }
 nav ul{
