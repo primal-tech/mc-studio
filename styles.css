@@ -669,6 +669,21 @@ footer{
   background:var(--bg-panel);
   border:1px solid var(--cream-line);
 }
+/* Mobile: break each gallery photo out to the screen edges, same
+   full-bleed treatment used on the product pages. The caption
+   (title, status, see more) stays in the normal contained column
+   below it. Desktop keeps the framed look inside the centered
+   640px column. */
+@media (max-width:860px){
+  .gallery-media{
+    margin-left:-40px;
+    margin-right:-40px;
+    width:calc(100% + 80px);
+    background:none;
+    border:none;
+    border-radius:0;
+  }
+}
 
 /* Sold / Available status tags — a plain info label (not a
    button/pill shape, so it doesn't read as a CTA). Used beside
