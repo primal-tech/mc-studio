@@ -377,11 +377,13 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
 }
 .about-grid p{color:var(--ink-soft); margin-bottom:20px; max-width:52ch;}
 .about-photo{
-  background:var(--bg);
+  background:var(--bg-panel);
+  border:1px solid var(--cream-line);
   aspect-ratio:4/5;
   overflow:hidden;
   max-width:160px;
   margin:0 auto;
+  padding:10px;
 }
 @media (min-width:700px){
   .about-photo{ max-width:none; margin:0; }
