@@ -414,6 +414,14 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
 }
 #contact .sec-head{ margin-bottom:24px; }
 form{display:flex; flex-direction:column; gap:20px;}
+.form-status{
+  font-size:14px;
+  color:var(--status-available);
+  min-height:1.2em;
+}
+.form-status.is-error{
+  color:var(--status-sold);
+}
 label{
   font-size:12px;
   color:var(--ink-soft);

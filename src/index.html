@@ -98,20 +98,24 @@
       <p style="margin-left:0;">Purchase inquiries, commission requests, or a conversation about a piece — start here.</p>
     </div>
     <div class="reveal" style="display:contents;">
-      <form id="contactForm" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Sent';">
+      <form id="contactForm">
+        <input type="hidden" name="access_key" value="47581204-795a-418f-a44a-90b87b66023c">
+        <input type="hidden" name="subject" value="New inquiry from Michael Cunningham Studio site">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div>
           <label for="name">Name</label>
-          <input id="name" type="text" required>
+          <input id="name" name="name" type="text" required>
         </div>
         <div>
           <label for="email">Email</label>
-          <input id="email" type="email" required>
+          <input id="email" name="email" type="email" required>
         </div>
         <div>
           <label for="message">Message</label>
-          <textarea id="message" required placeholder="Tell me about the piece you have in mind — size, subject, setting."></textarea>
+          <textarea id="message" name="message" required placeholder="Tell me about the piece you have in mind — size, subject, setting."></textarea>
         </div>
         <button type="submit">Send Message <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg></button>
+        <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
       </form>
       <div class="contact-info">
         <div class="row"><span>Location</span><span>Chester Springs, PA</span></div>
@@ -141,6 +145,47 @@
     }
   })();
 
+  // Submit the contact form to Web3Forms in the background, keeping
+  // the person on the page instead of redirecting them away.
+  (function(){
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+    const statusEl = document.getElementById('formStatus');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitLabel = submitBtn ? submitBtn.textContent : '';
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+      if (statusEl) { statusEl.textContent = ''; statusEl.classList.remove('is-error'); }
+
+      const formData = new FormData(form);
+      const payload = Object.fromEntries(formData);
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            if (submitBtn) submitBtn.textContent = 'Sent';
+            if (statusEl) statusEl.textContent = "Thanks — I'll get back to you soon.";
+            form.reset();
+          } else {
+            throw new Error(data.message || 'Submission failed');
+          }
+        })
+        .catch(() => {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = submitLabel; }
+          if (statusEl) {
+            statusEl.textContent = "Something went wrong — please try again, or email directly.";
+            statusEl.classList.add('is-error');
+          }
+        });
+    });
+  })();
   const menuToggle = document.getElementById('menuToggle');
   const mobileMenu = document.getElementById('mobileMenu');
   function closeMenu(){
