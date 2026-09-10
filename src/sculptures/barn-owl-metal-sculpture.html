@@ -18,6 +18,7 @@
     <a class="back-link" href="../index.html#shop">&larr; Back to Gallery</a>
     <div class="product-grid">
       <div>
+        <div class="piece-gallery-wrap">
         <div class="piece-gallery" data-gallery="locked-away-gallery">
           <div class="slide">
             <img src="../images/locked-away-hero.jpg" alt="Locked Away, a welded barn owl sculpture perched on a stone wall">
@@ -33,6 +34,13 @@
               Zoom
             </span>
           </div>
+        </div>
+        <button class="gallery-arrow gallery-arrow--prev" data-gallery-nav="locked-away-gallery" data-dir="prev" aria-label="Previous image" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"></polyline></svg>
+        </button>
+        <button class="gallery-arrow gallery-arrow--next" data-gallery-nav="locked-away-gallery" data-dir="next" aria-label="Next image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
+        </button>
         </div>
         <div class="gallery-dots" data-gallery-nav="locked-away-gallery">
           <button class="dot active" aria-label="Go to image 1"></button>
@@ -269,6 +277,8 @@
     const slides = Array.from(gallery.querySelectorAll('.slide'));
     const dotsWrap = document.querySelector(`.gallery-dots[data-gallery-nav="${galleryId}"]`);
     const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.dot')) : [];
+    const prevArrow = document.querySelector(`.gallery-arrow--prev[data-gallery-nav="${galleryId}"]`);
+    const nextArrow = document.querySelector(`.gallery-arrow--next[data-gallery-nav="${galleryId}"]`);
     const images = slides.map(s=>{
       const img = s.querySelector('img');
       return { src: img.src, alt: img.alt };
@@ -276,6 +286,8 @@
 
     function setActive(index){
       dots.forEach((d,i)=>d.classList.toggle('active', i === index));
+      if (prevArrow) prevArrow.disabled = index === 0;
+      if (nextArrow) nextArrow.disabled = index === slides.length - 1;
     }
 
     function closestSlideIndex(){
@@ -303,6 +315,13 @@
         slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
       });
     });
+
+    function goToSlide(index){
+      const clamped = Math.max(0, Math.min(slides.length - 1, index));
+      slides[clamped].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+    }
+    if (prevArrow) prevArrow.addEventListener('click', ()=> goToSlide(closestSlideIndex() - 1));
+    if (nextArrow) nextArrow.addEventListener('click', ()=> goToSlide(closestSlideIndex() + 1));
 
     // Click / tap a slide to open the lightbox
     slides.forEach((slide,i)=>{
