@@ -483,10 +483,11 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
   background:var(--bg);
   aspect-ratio:4/5;
   overflow:hidden;
-  max-width:220px;
+  max-width:320px;
+  margin:0 auto;
 }
 @media (min-width:700px){
-  .about-photo{ max-width:none; }
+  .about-photo{ max-width:none; margin:0; }
 }
 .about-photo img{
   width:100%;
