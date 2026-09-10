@@ -301,21 +301,14 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
   flex:0 0 86%;
   scroll-snap-align:center;
   position:relative;
-  overflow:hidden;
 }
 .piece-gallery .slide img{
   width:100%;
   aspect-ratio:3/4;
   object-fit:cover;
   display:block;
-  transform-origin:center center;
-  touch-action:pan-x pan-y;
-  cursor:zoom-in;
   -webkit-user-drag:none;
   user-select:none;
-}
-.piece-gallery .slide img.zoomed{
-  cursor:grab;
 }
 .piece-gallery-wrap{
   position:relative;
@@ -859,23 +852,4 @@ footer{
   font-size:13px;
   color:var(--ink-soft);
   font-style:italic;
-}
-
-/* Zoom hint caption under gallery slides (pinch or double-tap to zoom) */
-.slide-zoom-hint{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  margin:10px 0 6px;
-  color:var(--ink-soft);
-  font-family:'EB Garamond', serif;
-  font-size:12px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-}
-.slide-zoom-hint svg{
-  width:14px;
-  height:14px;
-  flex-shrink:0;
 }

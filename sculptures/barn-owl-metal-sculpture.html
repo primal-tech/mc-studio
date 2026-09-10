@@ -7,7 +7,7 @@
 <meta name="description" content="Locked Away is a Barn Owl sculpture by Michael Cunningham Studio, inspired by the artist's favorite bird — with a heart-shaped lock and key at its center, left open to interpretation. Available for purchase or by commission.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=e41b8e46">
+<link rel="stylesheet" href="../styles.css?v=68ce566d">
 </head>
 <body>
 
@@ -40,17 +40,9 @@
         <div class="piece-gallery" data-gallery="locked-away-gallery">
           <div class="slide">
             <img src="../images/locked-away-hero.jpg" alt="Locked Away, a welded barn owl sculpture perched on a stone wall">
-            <span class="slide-zoom-hint">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Pinch to zoom
-            </span>
           </div>
           <div class="slide">
             <img src="../images/locked-away-detail.jpg" alt="Close-up detail of Locked Away showing gear eyes, an antique lock, and key">
-            <span class="slide-zoom-hint">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Pinch to zoom
-            </span>
           </div>
         </div>
         <button class="gallery-arrow gallery-arrow--prev" data-gallery-nav="locked-away-gallery" data-dir="prev" aria-label="Previous image" disabled>
@@ -149,7 +141,7 @@
   }, {threshold:0.15});
   revealEls.forEach(el=>io.observe(el));
 
-  // Side-scrolling piece gallery with dot indicator and inline pinch-zoom
+  // Side-scrolling piece gallery with dot indicator
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll('.piece-gallery').forEach(gallery=>{
     const galleryId = gallery.dataset.gallery;
@@ -160,109 +152,10 @@
     const nextArrow = document.querySelector(`.gallery-arrow--next[data-gallery-nav="${galleryId}"]`);
     gallery.querySelectorAll('img').forEach(img=> img.addEventListener('dragstart', e=> e.preventDefault()));
 
-    // Pinch-to-zoom + pan, set up per slide. Only the active slide is
-    // ever left zoomed in — switching slides resets the others.
-    const slideResets = slides.map(slide=>{
-      const img = slide.querySelector('img');
-      let scale = 1, tx = 0, ty = 0;
-      const pointers = new Map();
-      let pinchStartDist = null, pinchStartScale = 1;
-      let panning = false, lastPanX = 0, lastPanY = 0;
-      let lastTapTime = 0;
-      let rafPending = false;
-
-      function clampPan(){
-        // Don't let the zoomed image be dragged past showing empty
-        // space beyond its own edges.
-        const rect = slide.getBoundingClientRect();
-        const maxX = (rect.width * (scale - 1)) / 2;
-        const maxY = (rect.height * (scale - 1)) / 2;
-        tx = Math.max(-maxX, Math.min(maxX, tx));
-        ty = Math.max(-maxY, Math.min(maxY, ty));
-      }
-      function applyNow(){
-        clampPan();
-        img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-        const zoomed = scale > 1.02;
-        img.classList.toggle('zoomed', zoomed);
-        slide.classList.toggle('zoomed', zoomed);
-        rafPending = false;
-      }
-      function apply(){
-        if (rafPending) return;
-        rafPending = true;
-        requestAnimationFrame(applyNow);
-      }
-      function reset(){
-        scale = 1; tx = 0; ty = 0;
-        img.style.transform = '';
-        img.classList.remove('zoomed');
-        slide.classList.remove('zoomed');
-      }
-      function dist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
-
-      slide.addEventListener('pointerdown', (e)=>{
-        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-        if (pointers.size === 1) {
-          if (scale > 1) {
-            panning = true;
-            lastPanX = e.clientX; lastPanY = e.clientY;
-            slide.setPointerCapture(e.pointerId);
-          }
-        } else if (pointers.size === 2) {
-          panning = false;
-          const pts = Array.from(pointers.values());
-          pinchStartDist = dist(pts[0], pts[1]);
-          pinchStartScale = scale;
-        }
-      });
-      slide.addEventListener('pointermove', (e)=>{
-        if (!pointers.has(e.pointerId)) return;
-        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-        if (pointers.size === 2 && pinchStartDist) {
-          const pts = Array.from(pointers.values());
-          const d = dist(pts[0], pts[1]);
-          scale = Math.min(4, Math.max(1, pinchStartScale * (d / pinchStartDist)));
-          apply();
-        } else if (pointers.size === 1 && panning && scale > 1) {
-          const dx = e.clientX - lastPanX, dy = e.clientY - lastPanY;
-          lastPanX = e.clientX; lastPanY = e.clientY;
-          tx += dx; ty += dy;
-          apply();
-        }
-      });
-      function endPointer(e){
-        pointers.delete(e.pointerId);
-        if (pointers.size < 2) pinchStartDist = null;
-        if (pointers.size === 0) {
-          panning = false;
-          if (scale <= 1) {
-            const now = Date.now();
-            if (now - lastTapTime < 300) {
-              scale = 2.5; apply(); lastTapTime = 0;
-            } else {
-              lastTapTime = now;
-            }
-          } else if (scale <= 1.02) {
-            reset();
-          }
-        }
-      }
-      slide.addEventListener('pointerup', endPointer);
-      slide.addEventListener('pointercancel', endPointer);
-      // Double-click to zoom for mouse/trackpad users
-      slide.addEventListener('dblclick', ()=>{
-        if (scale > 1) { reset(); } else { scale = 2.5; apply(); }
-      });
-
-      return reset;
-    });
-
     function setActive(index){
       dots.forEach((d,i)=>d.classList.toggle('active', i === index));
       if (prevArrow) prevArrow.disabled = index === 0;
       if (nextArrow) nextArrow.disabled = index === slides.length - 1;
-      slideResets.forEach((reset,i)=>{ if (i !== index) reset(); });
     }
 
     function closestSlideIndex(){
