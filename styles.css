@@ -379,20 +379,18 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
 .about-photo{
   background:var(--bg-panel);
   border:1px solid var(--cream-line);
-  aspect-ratio:4/5;
-  overflow:hidden;
-  max-width:160px;
-  margin:0 auto;
   padding:10px;
+  max-width:180px;
+  margin:0 auto;
 }
 @media (min-width:700px){
-  .about-photo{ max-width:none; margin:0; }
+  .about-photo{ max-width:none; width:100%; margin:0; }
 }
 .about-photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
   display:block;
+  width:100%;
+  aspect-ratio:4/5;
+  object-fit:cover;
   opacity:0.7;
 }
 
