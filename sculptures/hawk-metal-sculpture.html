@@ -7,7 +7,7 @@
 <meta name="description" content="Sentinel is a true-to-scale Red-Shouldered Hawk sculpture by Michael Cunningham Studio, inspired by the nesting pair that has watched over the artist's property for years. Available for purchase or by commission.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=7a77bd86">
+<link rel="stylesheet" href="../styles.css?v=898c48ee">
 </head>
 <body>
 
@@ -42,35 +42,35 @@
             <img src="../images/sentinel-flight-2.jpg" alt="Sentinel viewed from below in flight, showing bicycle gears and chain worked into the wings">
             <span class="slide-zoom-hint">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Zoom
+              Pinch to zoom
             </span>
           </div>
           <div class="slide">
             <img src="../images/sentinel-flight-1.jpg" alt="Sentinel, a welded hawk sculpture with wings raised, mounted in a wooded garden">
             <span class="slide-zoom-hint">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Zoom
+              Pinch to zoom
             </span>
           </div>
           <div class="slide">
             <img src="../images/sentinel-hero.jpg" alt="Sentinel, a welded hawk sculpture in flight, mounted in a garden">
             <span class="slide-zoom-hint">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Zoom
+              Pinch to zoom
             </span>
           </div>
           <div class="slide">
             <img src="../images/sentinel-head-detail.jpg" alt="Close-up of Sentinel's head, showing bicycle gears, chain, and welded feather detail" style="object-position:left center;">
             <span class="slide-zoom-hint">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Zoom
+              Pinch to zoom
             </span>
           </div>
           <div class="slide">
             <img src="../images/sentinel-detail.jpg" alt="Close-up detail of Sentinel showing bicycle gears, chain, and expanded metal feather work">
             <span class="slide-zoom-hint">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-              Zoom
+              Pinch to zoom
             </span>
           </div>
         </div>
@@ -123,16 +123,6 @@
   </div>
 </section>
 
-<div class="lightbox" id="lightbox" aria-hidden="true">
-  <button class="lightbox-close" aria-label="Close image viewer">&times;</button>
-  <button class="lightbox-nav lightbox-prev" aria-label="Previous image">&larr;</button>
-  <button class="lightbox-nav lightbox-next" aria-label="Next image">&rarr;</button>
-  <div class="lightbox-stage">
-    <img src="" alt="" id="lightboxImg">
-  </div>
-  <div class="gallery-dots lightbox-dots" id="lightboxDots"></div>
-</div>
-
 <footer>
   <div class="footer-follow">Follow along for new work and pieces in progress.</div>
   <div class="footer-social">
@@ -184,146 +174,7 @@
   }, {threshold:0.15});
   revealEls.forEach(el=>io.observe(el));
 
-  // Lightbox: full-size image viewer with easy exit
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const lightboxDots = document.getElementById('lightboxDots');
-  const lightboxClose = lightbox.querySelector('.lightbox-close');
-  const lightboxPrev = lightbox.querySelector('.lightbox-prev');
-  const lightboxNext = lightbox.querySelector('.lightbox-next');
-  let lightboxImages = [];
-  let lightboxIndex = 0;
-  let lightboxLastFocused = null;
-
-  function buildLightboxDots(count){
-    lightboxDots.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      const b = document.createElement('button');
-      b.className = 'dot';
-      b.setAttribute('aria-label', `Go to image ${i + 1}`);
-      b.addEventListener('click', ()=> showLightboxImage(i));
-      lightboxDots.appendChild(b);
-    }
-  }
-  function showLightboxImage(index){
-    lightboxIndex = (index + lightboxImages.length) % lightboxImages.length;
-    const item = lightboxImages[lightboxIndex];
-    lightboxImg.src = item.src;
-    lightboxImg.alt = item.alt;
-    Array.from(lightboxDots.children).forEach((d,i)=>d.classList.toggle('active', i === lightboxIndex));
-    lbResetZoom();
-  }
-  function openLightbox(images, index){
-    lightboxImages = images;
-    lightboxLastFocused = document.activeElement;
-    buildLightboxDots(images.length);
-    showLightboxImage(index);
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    lightboxClose.focus();
-  }
-  function closeLightbox(){
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    lbResetZoom();
-    if (lightboxLastFocused) lightboxLastFocused.focus();
-  }
-  lightboxClose.addEventListener('click', closeLightbox);
-  lightboxPrev.addEventListener('click', ()=> showLightboxImage(lightboxIndex - 1));
-  lightboxNext.addEventListener('click', ()=> showLightboxImage(lightboxIndex + 1));
-  lightbox.addEventListener('click', (e)=>{ if (e.target === lightbox) closeLightbox(); });
-  document.addEventListener('keydown', (e)=>{
-    if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') showLightboxImage(lightboxIndex - 1);
-    if (e.key === 'ArrowRight') showLightboxImage(lightboxIndex + 1);
-  });
-
-  // Lightbox gestures: swipe to navigate, pinch to zoom, drag to pan when zoomed
-  const lightboxStage = lightbox.querySelector('.lightbox-stage');
-  let lbScale = 1, lbTx = 0, lbTy = 0;
-  const lbPointers = new Map();
-  let lbPinchStartDist = null, lbPinchStartScale = 1;
-  let lbPanning = false, lbLastPanX = 0, lbLastPanY = 0;
-  let lbStartX = 0, lbStartY = 0, lbMoved = false;
-  let lbLastTapTime = 0;
-
-  function lbApplyTransform(){
-    lightboxImg.style.transform = `translate(${lbTx}px, ${lbTy}px) scale(${lbScale})`;
-    lightboxImg.classList.toggle('zoomed', lbScale > 1.02);
-  }
-  function lbResetZoom(){
-    lbScale = 1; lbTx = 0; lbTy = 0;
-    lightboxImg.style.transform = '';
-    lightboxImg.classList.remove('zoomed');
-  }
-  function lbDist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
-
-  lightboxStage.addEventListener('pointerdown', (e)=>{
-    lbPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    lightboxStage.setPointerCapture(e.pointerId);
-    if (lbPointers.size === 1) {
-      lbStartX = e.clientX; lbStartY = e.clientY; lbMoved = false;
-      if (lbScale > 1) { lbPanning = true; lbLastPanX = e.clientX; lbLastPanY = e.clientY; }
-    } else if (lbPointers.size === 2) {
-      lbPanning = false;
-      const pts = Array.from(lbPointers.values());
-      lbPinchStartDist = lbDist(pts[0], pts[1]);
-      lbPinchStartScale = lbScale;
-    }
-  });
-  lightboxStage.addEventListener('pointermove', (e)=>{
-    if (!lbPointers.has(e.pointerId)) return;
-    lbPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (lbPointers.size === 2 && lbPinchStartDist) {
-      const pts = Array.from(lbPointers.values());
-      const dist = lbDist(pts[0], pts[1]);
-      lbScale = Math.min(4, Math.max(1, lbPinchStartScale * (dist / lbPinchStartDist)));
-      lbApplyTransform();
-    } else if (lbPointers.size === 1) {
-      if (lbScale > 1 && lbPanning) {
-        const dx = e.clientX - lbLastPanX, dy = e.clientY - lbLastPanY;
-        lbLastPanX = e.clientX; lbLastPanY = e.clientY;
-        lbTx += dx / lbScale; lbTy += dy / lbScale;
-        lbApplyTransform();
-      } else if (Math.abs(e.clientX - lbStartX) > 10) {
-        lbMoved = true;
-      }
-    }
-  });
-  function lbEndPointer(e){
-    lbPointers.delete(e.pointerId);
-    if (lbPointers.size < 2) lbPinchStartDist = null;
-    if (lbPointers.size === 0) {
-      lbPanning = false;
-      if (lbScale <= 1) {
-        const dx = e.clientX - lbStartX, dy = e.clientY - lbStartY;
-        if (!lbMoved) {
-          const now = Date.now();
-          if (now - lbLastTapTime < 300) {
-            lbScale = 2.5; lbApplyTransform(); lbLastTapTime = 0;
-          } else {
-            lbLastTapTime = now;
-          }
-        } else if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-          showLightboxImage(lightboxIndex + (dx < 0 ? 1 : -1));
-        }
-      } else if (lbScale <= 1.02) {
-        lbScale = 1; lbTx = 0; lbTy = 0; lbApplyTransform();
-      }
-    }
-  }
-  lightboxStage.addEventListener('pointerup', lbEndPointer);
-  lightboxStage.addEventListener('pointercancel', lbEndPointer);
-  // Double-click to zoom for mouse/trackpad users (touch handled above via tap timing)
-  lightboxStage.addEventListener('dblclick', ()=>{
-    if (lbScale > 1) { lbScale = 1; lbTx = 0; lbTy = 0; } else { lbScale = 2.5; }
-    lbApplyTransform();
-  });
-
-  // Side-scrolling piece gallery with dot indicator
+  // Side-scrolling piece gallery with dot indicator and inline pinch-zoom
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll('.piece-gallery').forEach(gallery=>{
     const galleryId = gallery.dataset.gallery;
@@ -332,15 +183,94 @@
     const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.dot')) : [];
     const prevArrow = document.querySelector(`.gallery-arrow--prev[data-gallery-nav="${galleryId}"]`);
     const nextArrow = document.querySelector(`.gallery-arrow--next[data-gallery-nav="${galleryId}"]`);
-    const images = slides.map(s=>{
-      const img = s.querySelector('img');
-      return { src: img.src, alt: img.alt };
+    gallery.querySelectorAll('img').forEach(img=> img.addEventListener('dragstart', e=> e.preventDefault()));
+
+    // Pinch-to-zoom + pan, set up per slide. Only the active slide is
+    // ever left zoomed in — switching slides resets the others.
+    const slideResets = slides.map(slide=>{
+      const img = slide.querySelector('img');
+      let scale = 1, tx = 0, ty = 0;
+      const pointers = new Map();
+      let pinchStartDist = null, pinchStartScale = 1;
+      let panning = false, lastPanX = 0, lastPanY = 0;
+      let lastTapTime = 0;
+
+      function apply(){
+        img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+        const zoomed = scale > 1.02;
+        img.classList.toggle('zoomed', zoomed);
+        slide.classList.toggle('zoomed', zoomed);
+      }
+      function reset(){
+        scale = 1; tx = 0; ty = 0;
+        img.style.transform = '';
+        img.classList.remove('zoomed');
+        slide.classList.remove('zoomed');
+      }
+      function dist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
+
+      slide.addEventListener('pointerdown', (e)=>{
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (pointers.size === 1) {
+          if (scale > 1) {
+            panning = true;
+            lastPanX = e.clientX; lastPanY = e.clientY;
+            slide.setPointerCapture(e.pointerId);
+          }
+        } else if (pointers.size === 2) {
+          panning = false;
+          const pts = Array.from(pointers.values());
+          pinchStartDist = dist(pts[0], pts[1]);
+          pinchStartScale = scale;
+        }
+      });
+      slide.addEventListener('pointermove', (e)=>{
+        if (!pointers.has(e.pointerId)) return;
+        pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (pointers.size === 2 && pinchStartDist) {
+          const pts = Array.from(pointers.values());
+          const d = dist(pts[0], pts[1]);
+          scale = Math.min(4, Math.max(1, pinchStartScale * (d / pinchStartDist)));
+          apply();
+        } else if (pointers.size === 1 && panning && scale > 1) {
+          const dx = e.clientX - lastPanX, dy = e.clientY - lastPanY;
+          lastPanX = e.clientX; lastPanY = e.clientY;
+          tx += dx / scale; ty += dy / scale;
+          apply();
+        }
+      });
+      function endPointer(e){
+        pointers.delete(e.pointerId);
+        if (pointers.size < 2) pinchStartDist = null;
+        if (pointers.size === 0) {
+          panning = false;
+          if (scale <= 1) {
+            const now = Date.now();
+            if (now - lastTapTime < 300) {
+              scale = 2.5; apply(); lastTapTime = 0;
+            } else {
+              lastTapTime = now;
+            }
+          } else if (scale <= 1.02) {
+            reset();
+          }
+        }
+      }
+      slide.addEventListener('pointerup', endPointer);
+      slide.addEventListener('pointercancel', endPointer);
+      // Double-click to zoom for mouse/trackpad users
+      slide.addEventListener('dblclick', ()=>{
+        if (scale > 1) { reset(); } else { scale = 2.5; apply(); }
+      });
+
+      return reset;
     });
 
     function setActive(index){
       dots.forEach((d,i)=>d.classList.toggle('active', i === index));
       if (prevArrow) prevArrow.disabled = index === 0;
       if (nextArrow) nextArrow.disabled = index === slides.length - 1;
+      slideResets.forEach((reset,i)=>{ if (i !== index) reset(); });
     }
 
     function closestSlideIndex(){
@@ -376,23 +306,14 @@
     if (prevArrow) prevArrow.addEventListener('click', ()=> goToSlide(closestSlideIndex() - 1));
     if (nextArrow) nextArrow.addEventListener('click', ()=> goToSlide(closestSlideIndex() + 1));
 
-    // Click / tap a slide to open the lightbox
-    slides.forEach((slide,i)=>{
-      slide.addEventListener('click', ()=>{
-        if (dragMoved) { dragMoved = false; return; }
-        openLightbox(images, i);
-      });
-    });
-
     // Desktop drag-to-scroll (mice have no native horizontal scroll).
     // Touch is intentionally excluded here — it already gets smooth,
     // native horizontal scrolling, and capturing touch pointers for
     // this was fighting the browser's vertical page-scroll handling.
-    let isDown = false, startX = 0, startScroll = 0, dragMoved = false;
+    let isDown = false, startX = 0, startScroll = 0;
     gallery.addEventListener('pointerdown', (e)=>{
       if (e.pointerType !== 'mouse') return;
       isDown = true;
-      dragMoved = false;
       gallery.classList.add('dragging');
       startX = e.clientX;
       startScroll = gallery.scrollLeft;
@@ -401,7 +322,6 @@
     gallery.addEventListener('pointermove', (e)=>{
       if (e.pointerType !== 'mouse') return;
       if (!isDown) return;
-      if (Math.abs(e.clientX - startX) > 5) dragMoved = true;
       gallery.scrollLeft = startScroll - (e.clientX - startX);
     });
     function endDrag(e){
