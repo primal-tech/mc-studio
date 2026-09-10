@@ -331,9 +331,13 @@
       });
     });
 
-    // Desktop drag-to-scroll (mice have no native horizontal scroll)
+    // Desktop drag-to-scroll (mice have no native horizontal scroll).
+    // Touch is intentionally excluded here — it already gets smooth,
+    // native horizontal scrolling, and capturing touch pointers for
+    // this was fighting the browser's vertical page-scroll handling.
     let isDown = false, startX = 0, startScroll = 0, dragMoved = false;
     gallery.addEventListener('pointerdown', (e)=>{
+      if (e.pointerType !== 'mouse') return;
       isDown = true;
       dragMoved = false;
       gallery.classList.add('dragging');
@@ -342,11 +346,13 @@
       gallery.setPointerCapture(e.pointerId);
     });
     gallery.addEventListener('pointermove', (e)=>{
+      if (e.pointerType !== 'mouse') return;
       if (!isDown) return;
       if (Math.abs(e.clientX - startX) > 5) dragMoved = true;
       gallery.scrollLeft = startScroll - (e.clientX - startX);
     });
-    function endDrag(){
+    function endDrag(e){
+      if (e && e.pointerType && e.pointerType !== 'mouse') return;
       if (!isDown) return;
       isDown = false;
       gallery.classList.remove('dragging');
