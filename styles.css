@@ -93,11 +93,15 @@ nav{
   text-transform:none;
   letter-spacing:normal;
   color:var(--brass);
-  margin-left:150px;
+  margin-left:4px;
+}
+@media (max-width:860px){
+  .brand-script{ margin-left:150px; }
 }
 nav ul{
   list-style:none;
   display:flex;
+  align-items:center;
   gap:40px;
   margin:0;
   padding:0;
