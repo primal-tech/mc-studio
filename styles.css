@@ -149,11 +149,16 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
   display:none;
   background:none;
   border:none;
+  border-radius:0;
   padding:6px;
   cursor:pointer;
   flex-direction:column;
   gap:5px;
   z-index:110;
+}
+.hamburger:hover, .hamburger:focus, .hamburger:active{
+  background:none;
+  color:inherit;
 }
 .hamburger span{
   display:block;
