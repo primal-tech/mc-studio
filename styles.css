@@ -48,6 +48,7 @@ section{
   border-bottom:1px solid var(--line);
 }
 section:last-of-type{border-bottom:none;}
+#shop{ padding-top:50px; }
 
 .eyebrow{
   font-family:'EB Garamond', serif;
@@ -70,21 +71,14 @@ section:last-of-type{border-bottom:none;}
 
 /* nav */
 nav{
-  position:fixed;
-  top:0; left:0; right:0;
-  z-index:120;
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:26px 40px;
   background:rgba(247,242,232,0.92);
-  backdrop-filter:blur(3px);
   border-bottom:1px solid var(--cream-line);
 }
 .brand{
-  display:inline-flex;
-  flex-direction:column;
-  align-items:center;
   font-family:'Playfair Display', serif;
   font-size:17px;
   letter-spacing:0.1em;
@@ -99,6 +93,7 @@ nav{
   text-transform:none;
   letter-spacing:normal;
   color:var(--brass-deep);
+  margin-left:150px;
 }
 nav ul{
   list-style:none;
@@ -714,7 +709,7 @@ footer{
    ------------------------------------------------------------ */
 
 .product-hero{
-  padding-top: 160px;
+  padding-top: 50px;
   padding-bottom: 100px;
 }
 .back-link{
