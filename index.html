@@ -116,7 +116,7 @@
       <p style="margin-left:0;">Purchase inquiries, commission requests, or a conversation about a piece — start here.</p>
     </div>
     <div class="reveal" style="display:contents;">
-      <form id="contactForm">
+      <form id="contactForm" autocomplete="off">
         <input type="hidden" name="access_key" value="47581204-795a-418f-a44a-90b87b66023c">
         <input type="hidden" name="subject" value="New inquiry from Michael Cunningham Studio site">
         <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
@@ -171,6 +171,15 @@
       msg.value = "I'm interested in a commission similar to: " + decodeURIComponent(commission);
     } else {
       msg.value = '';
+    }
+    // Once applied, drop the query param from the address bar so a
+    // later refresh of this same tab starts fresh instead of
+    // re-triggering the same prefilled message every time.
+    if (item || commission) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('item');
+      url.searchParams.delete('commission');
+      window.history.replaceState({}, '', url.pathname + url.search + url.hash);
     }
   })();
 
