@@ -191,6 +191,16 @@
       const formData = new FormData(form);
       const payload = Object.fromEntries(formData);
 
+      // Best-effort: also log the lead to a Google Sheet. This runs
+      // independently of the Web3Forms email below — if it fails or
+      // is slow, it never blocks or breaks the actual notification.
+      fetch('https://script.google.com/macros/s/AKfycbxDU7KjFdyvjf6g0E2PPbSibfcbkCMd4wcsfoMA1dlRnZp2B6N258OJU7Qkv9qdzcjOyw/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ name: payload.name, email: payload.email, message: payload.message })
+      }).catch(()=>{ /* silent — Web3Forms email is the reliable path */ });
+
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
