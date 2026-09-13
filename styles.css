@@ -105,10 +105,10 @@ section:last-of-type{border-bottom:none;}
   top:calc(62% + 6px);
   left:50%;
   width:46px;
-  height:12px;
+  height:10px;
   transform:translateX(-50%);
-  background:radial-gradient(ellipse at center, rgba(42,37,33,0.28), transparent 72%);
-  filter:blur(1.5px);
+  background:rgba(42,37,33,0.16);
+  border-radius:50%;
 }
 .ball-scene .ball{
   position:absolute;
@@ -118,9 +118,7 @@ section:last-of-type{border-bottom:none;}
   height:56px;
   transform:translateX(-50%);
   border-radius:50%;
-  border:2px solid var(--brass);
-  background:rgba(138,106,63,0.14);
-  box-shadow:0 0 20px 3px rgba(138,106,63,0.3);
+  background:var(--brass);
 }
 @media (prefers-reduced-motion: reduce){
   .ball-scene .ball-wrap{ transform:none !important; left:50%; }
