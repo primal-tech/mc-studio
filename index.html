@@ -7,7 +7,7 @@
 <meta name="description" content="Nature and wildlife sculpture by Michael Cunningham Studio — each piece inspired by an animal watched closely, then welded into steel to hold its moment. Available for purchase or by commission from Chester Springs, PA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Allura&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=5d20fcaf">
+<link rel="stylesheet" href="styles.css?v=adf36418">
 </head>
 <body>
 
@@ -387,9 +387,6 @@
         p[1] + (b[i][1] - p[1]) * t
       ]);
     }
-    function toPolygon(points){
-      return 'polygon(' + points.map(p => p[0].toFixed(2) + '% ' + p[1].toFixed(2) + '%').join(', ') + ')';
-    }
     function toSvgPoints(points){
       return points.map(p => p[0].toFixed(2) + ',' + p[1].toFixed(2)).join(' ');
     }
@@ -437,14 +434,12 @@
       const bounceHeight = bounceAmplitude * Math.pow(Math.sin(rotation * Math.PI / 180 * bounceFrequency), 2);
       const normalizedBounce = bounceHeight / bounceAmplitude;
 
-      const clip = toPolygon(points);
       const svgPoints = toSvgPoints(points);
       const horizonY = horizonLine.getBoundingClientRect().top;
 
       morphPolygon.setAttribute('points', svgPoints);
       morphShape.style.transform = `rotate(${rotation}deg)`;
-      morphShadow.style.clipPath = clip;
-      morphShadow.style.transform = `scaleY(0.35) rotate(${rotation}deg)`;
+      morphShadow.style.transform = `scaleY(0.35)`;
 
       const shapeRect = morphShape.getBoundingClientRect();
       const shapeDX = targetCenterX - (shapeRect.left + shapeRect.width / 2);
@@ -459,7 +454,7 @@
       const shadowDY = horizonY - shadowRect.top;
       const shadowScale = 1 - normalizedBounce * 0.4;
       morphShadow.style.opacity = 1 - normalizedBounce * 0.3;
-      morphShadow.style.transform = `translate(${shadowDX}px, ${shadowDY}px) scaleY(0.35) scale(${shadowScale}) rotate(${rotation}deg)`;
+      morphShadow.style.transform = `translate(${shadowDX}px, ${shadowDY}px) scaleY(0.35) scale(${shadowScale})`;
 
       morphTicking = false;
     }
