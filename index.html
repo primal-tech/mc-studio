@@ -7,7 +7,7 @@
 <meta name="description" content="Nature and wildlife sculpture by Michael Cunningham Studio — each piece inspired by an animal watched closely, then welded into steel to hold its moment. Available for purchase or by commission from Chester Springs, PA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Allura&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=6f22c956">
+<link rel="stylesheet" href="styles.css?v=c20cc248">
 </head>
 <body>
 
@@ -119,6 +119,14 @@
     </div>
   </div>
 </section>
+
+<div class="ball-scene" data-ball-scene aria-hidden="true">
+  <div class="horizon-line"></div>
+  <div class="ball-wrap">
+    <div class="ball-shadow"></div>
+    <div class="ball"></div>
+  </div>
+</div>
 
 <section id="about">
   <div class="wrap">
@@ -318,6 +326,38 @@
     window.addEventListener('scroll', onScroll, {passive:true});
     window.addEventListener('resize', onScroll);
     updateParallax();
+  }
+
+  // Ball scene: rolls fully off-screen to fully off-screen as the
+  // section scrolls through the viewport, driven purely by scroll
+  // position rather than a looping CSS animation.
+  const ballScene = document.querySelector('[data-ball-scene]');
+  const ballWrap = ballScene ? ballScene.querySelector('.ball-wrap') : null;
+  if (ballScene && ballWrap && !prefersReducedMotion) {
+    const ballRadius = 28; // half the ball's 56px width
+    let ballTicking = false;
+    function updateBall(){
+      const rect = ballScene.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // 0 = section just entering at the bottom of the viewport,
+      // 1 = section has fully exited at the top.
+      let progress = (vh - rect.top) / (vh + rect.height);
+      progress = Math.max(0, Math.min(1, progress));
+      const startX = -(ballRadius * 2 + 40);
+      const endX = window.innerWidth + ballRadius * 2 + 40;
+      const x = startX + progress * (endX - startX);
+      ballWrap.style.transform = `translateX(${x}px)`;
+      ballTicking = false;
+    }
+    function onBallScroll(){
+      if (!ballTicking) {
+        requestAnimationFrame(updateBall);
+        ballTicking = true;
+      }
+    }
+    window.addEventListener('scroll', onBallScroll, {passive:true});
+    window.addEventListener('resize', onBallScroll);
+    updateBall();
   }
 </script>
 

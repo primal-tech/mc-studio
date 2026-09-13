@@ -77,6 +77,54 @@ section:last-of-type{border-bottom:none;}
   .shape-morph{ animation:none; }
 }
 
+/* Scroll-linked ball scene: a hollow, backlit ball that travels
+   fully off-screen to fully off-screen as the user scrolls past
+   this section, with a ground shadow and a subtle horizon line
+   for context. Position is driven entirely by scroll progress
+   (see the ballScene JS below) — no CSS animation loop. */
+.ball-scene{
+  position:relative;
+  height:160px;
+  overflow:hidden;
+}
+.ball-scene .horizon-line{
+  position:absolute;
+  left:0; right:0;
+  top:62%;
+  height:1px;
+  background:linear-gradient(to right, transparent, var(--cream-line) 15%, var(--cream-line) 85%, transparent);
+}
+.ball-scene .ball-wrap{
+  position:absolute;
+  top:0;
+  left:0;
+  will-change:transform;
+}
+.ball-scene .ball-shadow{
+  position:absolute;
+  top:calc(62% + 6px);
+  left:50%;
+  width:46px;
+  height:12px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at center, rgba(42,37,33,0.28), transparent 72%);
+  filter:blur(1.5px);
+}
+.ball-scene .ball{
+  position:absolute;
+  top:calc(62% - 60px);
+  left:50%;
+  width:56px;
+  height:56px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 50%, transparent 58%, var(--brass) 60%, var(--brass) 68%, transparent 70%);
+  box-shadow:0 0 20px 3px rgba(138,106,63,0.3);
+}
+@media (prefers-reduced-motion: reduce){
+  .ball-scene .ball-wrap{ transform:none !important; left:50%; }
+}
+
 .eyebrow{
   font-family:'EB Garamond', serif;
   font-size:13px;
