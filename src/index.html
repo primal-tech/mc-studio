@@ -106,7 +106,9 @@
 <div class="morph-scene" data-morph-scene aria-hidden="true">
   <div class="horizon-line"></div>
   <div class="morph-shadow" data-morph-shadow></div>
-  <div class="morph-shape" data-morph-shape></div>
+  <svg class="morph-shape-svg" data-morph-shape viewBox="0 0 100 100">
+    <polygon class="morph-polygon" data-morph-polygon points="" stroke-width="3" stroke-linejoin="round"/>
+  </svg>
 </div>
 
 <section id="about">
@@ -307,8 +309,9 @@
   // requestAnimationFrame throttling like the rest of the page.
   const morphScene = document.querySelector('[data-morph-scene]');
   const morphShape = document.querySelector('[data-morph-shape]');
+  const morphPolygon = document.querySelector('[data-morph-polygon]');
   const morphShadow = document.querySelector('[data-morph-shadow]');
-  if (morphScene && morphShape && morphShadow && !prefersReducedMotion) {
+  if (morphScene && morphShape && morphPolygon && morphShadow && !prefersReducedMotion) {
     const SQUARE = [[50.00,1.00],[66.33,1.00],[82.67,1.00],[99.00,1.00],[99.00,17.33],[99.00,33.67],[99.00,50.00],[99.00,66.33],[99.00,82.67],[99.00,99.00],[82.67,99.00],[66.33,99.00],[50.00,99.00],[33.67,99.00],[17.33,99.00],[1.00,99.00],[1.00,82.67],[1.00,66.33],[1.00,50.00],[1.00,33.67],[1.00,17.33],[1.00,1.00],[17.33,1.00],[33.67,1.00]];
     const HEXAGON = [[50.00,1.00],[60.61,7.12],[71.22,13.25],[81.83,19.38],[92.44,25.50],[92.44,37.75],[92.44,50.00],[92.44,62.25],[92.44,74.50],[81.83,80.62],[71.22,86.75],[60.61,92.88],[50.00,99.00],[39.39,92.88],[28.78,86.75],[18.17,80.62],[7.56,74.50],[7.56,62.25],[7.56,50.00],[7.56,37.75],[7.56,25.50],[18.17,19.37],[28.78,13.25],[39.39,7.12]];
     const CIRCLE = [[50.00,1.00],[62.68,2.67],[74.50,7.56],[84.65,15.35],[92.44,25.50],[97.33,37.32],[99.00,50.00],[97.33,62.68],[92.44,74.50],[84.65,84.65],[74.50,92.44],[62.68,97.33],[50.00,99.00],[37.32,97.33],[25.50,92.44],[15.35,84.65],[7.56,74.50],[2.67,62.68],[1.00,50.00],[2.67,37.32],[7.56,25.50],[15.35,15.35],[25.50,7.56],[37.32,2.67]];
@@ -321,6 +324,9 @@
     }
     function toPolygon(points){
       return 'polygon(' + points.map(p => p[0].toFixed(2) + '% ' + p[1].toFixed(2) + '%').join(', ') + ')';
+    }
+    function toSvgPoints(points){
+      return points.map(p => p[0].toFixed(2) + ',' + p[1].toFixed(2)).join(' ');
     }
 
     const horizonLine = morphScene.querySelector('.horizon-line');
@@ -358,9 +364,10 @@
       const normalizedBounce = bounceHeight / bounceAmplitude;
 
       const clip = toPolygon(points);
+      const svgPoints = toSvgPoints(points);
       const horizonY = horizonLine.getBoundingClientRect().top;
 
-      morphShape.style.clipPath = clip;
+      morphPolygon.setAttribute('points', svgPoints);
       morphShape.style.transform = `rotate(${rotation}deg)`;
       morphShadow.style.clipPath = clip;
       morphShadow.style.transform = `scaleY(0.35) rotate(${rotation}deg)`;

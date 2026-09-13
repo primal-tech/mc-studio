@@ -108,17 +108,21 @@ section:last-of-type{border-bottom:none;}
   background:rgba(30,24,20,0.18);
   will-change:transform;
 }
-.morph-scene .morph-shape{
+.morph-scene .morph-shape-svg{
   position:absolute;
   top:0;
   left:0;
   width:70px;
   height:70px;
-  background:var(--brass);
+  overflow:visible;
   will-change:transform;
 }
+.morph-scene .morph-polygon{
+  fill:none;
+  stroke:var(--brass);
+}
 @media (prefers-reduced-motion: reduce){
-  .morph-scene .morph-shape, .morph-scene .morph-shadow{ transform:none !important; left:50%; top:62%; }
+  .morph-scene .morph-shape-svg, .morph-scene .morph-shadow{ transform:none !important; left:50%; top:62%; }
 }
 
 .eyebrow{
