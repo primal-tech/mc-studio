@@ -118,22 +118,34 @@
   const menuToggleBtn = document.getElementById('menuToggle');
   if (mainNav && navSpacer && siteHeaderEl && menuToggleBtn) {
     let navPinTicking = false;
+    let navUnpinTimer = null;
     function updateNavPin(){
       const headerBottom = siteHeaderEl.getBoundingClientRect().bottom;
       const shouldPin = headerBottom <= 0;
       const isPinned = mainNav.classList.contains('is-pinned');
       if (shouldPin && !isPinned) {
+        clearTimeout(navUnpinTimer);
         // Relocate the same hamburger button into the pinned bar
         // (rather than duplicating it) so there's one source of
-        // truth for its open/closed state either way.
+        // truth for its open/closed state either way. It moves in
+        // while nav is still invisible (opacity 0), then the whole
+        // bar fades/slides in together on the next frame so the
+        // relocation itself is never visible mid-transition.
         mainNav.appendChild(menuToggleBtn);
-        mainNav.classList.add('is-pinned');
         navSpacer.style.height = mainNav.offsetHeight + 'px';
         navSpacer.classList.add('is-active');
+        requestAnimationFrame(() => { mainNav.classList.add('is-pinned'); });
       } else if (!shouldPin && isPinned) {
         mainNav.classList.remove('is-pinned');
         navSpacer.classList.remove('is-active');
-        siteHeaderEl.appendChild(menuToggleBtn);
+        // Wait for the fade-out to finish before moving the button
+        // back to the header, so it doesn't visibly snap into place
+        // mid-transition.
+        navUnpinTimer = setTimeout(() => {
+          if (!mainNav.classList.contains('is-pinned')) {
+            siteHeaderEl.appendChild(menuToggleBtn);
+          }
+        }, 260);
       }
       navPinTicking = false;
     }
