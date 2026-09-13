@@ -134,7 +134,9 @@
         mainNav.appendChild(menuToggleBtn);
         navSpacer.style.height = mainNav.offsetHeight + 'px';
         navSpacer.classList.add('is-active');
-        requestAnimationFrame(() => { mainNav.classList.add('is-pinned'); });
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => { mainNav.classList.add('is-pinned'); });
+        });
       } else if (!shouldPin && isPinned) {
         mainNav.classList.remove('is-pinned');
         navSpacer.classList.remove('is-active');
