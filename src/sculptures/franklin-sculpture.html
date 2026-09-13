@@ -107,6 +107,35 @@
     }
   })();
 
+  // Keep the nav bar reachable without relying on native
+  // position:sticky (avoided due to an unresolved rendering
+  // difference on some Safari versions) — instead, toggle a fixed
+  // position via scroll listener once the full logo header scrolls
+  // out of view, with a spacer to prevent a layout jump.
+  const mainNav = document.getElementById('mainNav');
+  const navSpacer = document.getElementById('navSpacer');
+  const siteHeaderEl = document.querySelector('.site-header');
+  if (mainNav && navSpacer) {
+    let navPinTicking = false;
+    function updateNavPin(){
+      navSpacer.style.height = mainNav.offsetHeight + 'px';
+      const headerBottom = siteHeaderEl ? siteHeaderEl.getBoundingClientRect().bottom : 0;
+      const shouldPin = headerBottom <= 0;
+      mainNav.classList.toggle('is-pinned', shouldPin);
+      navSpacer.classList.toggle('is-active', shouldPin);
+      navPinTicking = false;
+    }
+    function onNavScroll(){
+      if (!navPinTicking) {
+        requestAnimationFrame(updateNavPin);
+        navPinTicking = true;
+      }
+    }
+    window.addEventListener('scroll', onNavScroll, {passive:true});
+    window.addEventListener('resize', updateNavPin);
+    updateNavPin();
+  }
+
   const menuToggle = document.getElementById('menuToggle');
   const mobileMenu = document.getElementById('mobileMenu');
   function closeMenu(){

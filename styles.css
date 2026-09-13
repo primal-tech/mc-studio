@@ -140,8 +140,7 @@ section:last-of-type{border-bottom:none;}
 
 /* nav: slim bar with just links/hamburger, stays reachable via sticky */
 nav{
-  position:sticky;
-  top:0;
+  position:relative;
   z-index:120;
   display:flex;
   align-items:center;
@@ -149,6 +148,18 @@ nav{
   padding:16px 40px;
   background:var(--bg);
   border-bottom:1px solid var(--cream-line);
+}
+nav.is-pinned{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+}
+.nav-spacer{
+  display:none;
+}
+.nav-spacer.is-active{
+  display:block;
 }
 .brand{
   font-family:'Playfair Display', serif;
