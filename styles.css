@@ -106,9 +106,10 @@ section:last-of-type{border-bottom:none;}
   position:absolute;
   top:62%;
   left:50%;
-  width:88px;
-  height:14px;
-  transform:translate(-50%, 0%);
+  width:70px;
+  height:22px;
+  transform:translate(-50%, 0) rotate(-8deg) skewX(-25deg);
+  transform-origin:50% 0%;
   background:rgba(30,24,20,0.42);
   border-radius:50%;
 }
