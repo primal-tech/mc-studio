@@ -132,7 +132,7 @@ section:last-of-type{border-bottom:none;}
 /* header: full logo block, scrolls away normally */
 .site-header{
   display:flex;
-  justify-content:center;
+  justify-content:flex-start;
   padding:26px 40px 16px;
   background:var(--bg);
   color:var(--ink);
