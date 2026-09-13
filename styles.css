@@ -63,15 +63,12 @@ section:last-of-type{border-bottom:none;}
 }
 .eyebrow::before, .eyebrow::after{
   content:"";
-  height:1px;
-  width:56px;
+  width:6px;
+  height:6px;
+  background:var(--brass-deep);
+  transform:rotate(45deg);
   display:inline-block;
-}
-.eyebrow::before{
-  background:linear-gradient(to left, var(--brass-deep), transparent);
-}
-.eyebrow::after{
-  background:linear-gradient(to right, var(--brass-deep), transparent);
+  flex-shrink:0;
 }
 
 /* nav */
