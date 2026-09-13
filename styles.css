@@ -106,8 +106,8 @@ section:last-of-type{border-bottom:none;}
   position:absolute;
   top:62%;
   left:50%;
-  width:46px;
-  height:16px;
+  width:88px;
+  height:14px;
   transform:translate(-50%, 0%);
   background:rgba(30,24,20,0.42);
   border-radius:50%;
