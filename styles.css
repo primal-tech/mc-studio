@@ -128,15 +128,6 @@ section:last-of-type{border-bottom:none;}
   align-items:center;
   gap:14px;
 }
-.eyebrow::before, .eyebrow::after{
-  content:"";
-  width:6px;
-  height:6px;
-  background:var(--brass);
-  transform:rotate(45deg);
-  display:inline-block;
-  flex-shrink:0;
-}
 
 /* nav */
 nav{
