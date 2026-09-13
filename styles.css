@@ -695,6 +695,8 @@ footer{
   border-bottom:1px solid transparent;
   transition:border-color .3s;
 }
+.gallery-caption > div{ min-width:0; }
+.gallery-caption .see-more{ flex-shrink:0; }
 .gallery-card:hover .gallery-caption{
   border-color:var(--line);
 }
