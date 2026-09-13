@@ -307,6 +307,39 @@
     updateNavPin();
   }
 
+  // TEMPORARY DIAGNOSTIC — remove once the header gap is resolved.
+  // Shows real measurements from this exact device/browser so we
+  // can see what's actually happening instead of guessing blind.
+  (function(){
+    const box = document.createElement('div');
+    box.style.cssText = 'position:fixed;bottom:10px;left:10px;right:10px;z-index:99999;background:rgba(0,0,0,0.85);color:#0f0;font-family:monospace;font-size:10px;padding:10px;border-radius:6px;max-height:45vh;overflow:auto;white-space:pre-wrap;';
+    document.body.appendChild(box);
+    function rectOf(sel){
+      const el = document.querySelector(sel);
+      if (!el) return sel + ': NOT FOUND\n';
+      const r = el.getBoundingClientRect();
+      const cs = getComputedStyle(el);
+      return sel + ':\n  top=' + r.top.toFixed(1) + ' bottom=' + r.bottom.toFixed(1) + ' height=' + r.height.toFixed(1) +
+        '\n  display=' + cs.display + ' position=' + cs.position +
+        '\n  padding=' + cs.paddingTop + '/' + cs.paddingBottom +
+        '\n  margin=' + cs.marginTop + '/' + cs.marginBottom +
+        '\n  lineHeight=' + cs.lineHeight + ' fontSize=' + cs.fontSize + '\n';
+    }
+    function render(){
+      let out = 'devicePixelRatio=' + window.devicePixelRatio + ' innerWidth=' + window.innerWidth + ' innerHeight=' + window.innerHeight + '\n\n';
+      out += rectOf('.site-header') + '\n';
+      out += rectOf('.brand') + '\n';
+      out += rectOf('#mainNav') + '\n';
+      out += rectOf('#navSpacer') + '\n';
+      out += rectOf('.hamburger') + '\n';
+      out += rectOf('section') + '\n';
+      box.textContent = out;
+    }
+    render();
+    window.addEventListener('resize', render);
+    window.addEventListener('scroll', render, {passive:true});
+  })();
+
   const menuToggle = document.getElementById('menuToggle');
   const mobileMenu = document.getElementById('mobileMenu');
   function closeMenu(){
