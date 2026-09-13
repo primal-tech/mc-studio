@@ -252,14 +252,26 @@
   const mainNav = document.getElementById('mainNav');
   const navSpacer = document.getElementById('navSpacer');
   const siteHeaderEl = document.querySelector('.site-header');
-  if (mainNav && navSpacer) {
+  const menuToggleBtn = document.getElementById('menuToggle');
+  if (mainNav && navSpacer && siteHeaderEl && menuToggleBtn) {
     let navPinTicking = false;
     function updateNavPin(){
-      navSpacer.style.height = mainNav.offsetHeight + 'px';
-      const headerBottom = siteHeaderEl ? siteHeaderEl.getBoundingClientRect().bottom : 0;
+      const headerBottom = siteHeaderEl.getBoundingClientRect().bottom;
       const shouldPin = headerBottom <= 0;
-      mainNav.classList.toggle('is-pinned', shouldPin);
-      navSpacer.classList.toggle('is-active', shouldPin);
+      const isPinned = mainNav.classList.contains('is-pinned');
+      if (shouldPin && !isPinned) {
+        // Relocate the same hamburger button into the pinned bar
+        // (rather than duplicating it) so there's one source of
+        // truth for its open/closed state either way.
+        mainNav.appendChild(menuToggleBtn);
+        mainNav.classList.add('is-pinned');
+        navSpacer.style.height = mainNav.offsetHeight + 'px';
+        navSpacer.classList.add('is-active');
+      } else if (!shouldPin && isPinned) {
+        mainNav.classList.remove('is-pinned');
+        navSpacer.classList.remove('is-active');
+        siteHeaderEl.appendChild(menuToggleBtn);
+      }
       navPinTicking = false;
     }
     function onNavScroll(){

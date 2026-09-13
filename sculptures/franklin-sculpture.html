@@ -7,12 +7,15 @@
 <meta name="description" content="Franklin is a Red Fox sculpture currently in progress at Michael Cunningham Studio, built from reclaimed steel, bicycle gears, and chain, and named at the request of the artist's friends and neighbors.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Allura&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=9b76d3f8">
+<link rel="stylesheet" href="../styles.css?v=547144f8">
 </head>
 <body>
 
 <div class="site-header">
   <a href="../index.html" class="brand"><span class="brand-name">Michael Cunningham</span><span class="brand-script">Studio</span></a>
+  <button class="hamburger" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </div>
 
 <nav id="mainNav">
@@ -22,9 +25,6 @@
     <li><a href="../index.html#contact">Contact</a></li>
     <li><a href="../index.html#commission" class="nav-cta">Commission <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg></a></li>
   </ul>
-  <button class="hamburger" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 <div class="nav-spacer" id="navSpacer"></div>
 
@@ -149,14 +149,26 @@
   const mainNav = document.getElementById('mainNav');
   const navSpacer = document.getElementById('navSpacer');
   const siteHeaderEl = document.querySelector('.site-header');
-  if (mainNav && navSpacer) {
+  const menuToggleBtn = document.getElementById('menuToggle');
+  if (mainNav && navSpacer && siteHeaderEl && menuToggleBtn) {
     let navPinTicking = false;
     function updateNavPin(){
-      navSpacer.style.height = mainNav.offsetHeight + 'px';
-      const headerBottom = siteHeaderEl ? siteHeaderEl.getBoundingClientRect().bottom : 0;
+      const headerBottom = siteHeaderEl.getBoundingClientRect().bottom;
       const shouldPin = headerBottom <= 0;
-      mainNav.classList.toggle('is-pinned', shouldPin);
-      navSpacer.classList.toggle('is-active', shouldPin);
+      const isPinned = mainNav.classList.contains('is-pinned');
+      if (shouldPin && !isPinned) {
+        // Relocate the same hamburger button into the pinned bar
+        // (rather than duplicating it) so there's one source of
+        // truth for its open/closed state either way.
+        mainNav.appendChild(menuToggleBtn);
+        mainNav.classList.add('is-pinned');
+        navSpacer.style.height = mainNav.offsetHeight + 'px';
+        navSpacer.classList.add('is-active');
+      } else if (!shouldPin && isPinned) {
+        mainNav.classList.remove('is-pinned');
+        navSpacer.classList.remove('is-active');
+        siteHeaderEl.appendChild(menuToggleBtn);
+      }
       navPinTicking = false;
     }
     function onNavScroll(){
