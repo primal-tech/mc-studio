@@ -656,6 +656,7 @@ footer{
 }
 .status-tag--available{ color:var(--status-available); background:rgba(82,104,74,0.11); }
 .status-tag--sold{ color:var(--status-sold); background:rgba(156,74,61,0.1); }
+.status-tag--tbd{ color:var(--ink-soft); background:rgba(116,105,92,0.1); }
 .parallax-layer{
   position:absolute;
   top:-10%;
