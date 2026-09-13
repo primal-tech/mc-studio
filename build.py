@@ -31,6 +31,8 @@ PAGES = [
      ROOT / "sculptures" / "hawk-metal-sculpture.html", "../index.html"),
     (SRC / "sculptures" / "barn-owl-metal-sculpture.html",
      ROOT / "sculptures" / "barn-owl-metal-sculpture.html", "../index.html"),
+    (SRC / "sculptures" / "franklin-sculpture.html",
+     ROOT / "sculptures" / "franklin-sculpture.html", "../index.html"),
 ]
 
 

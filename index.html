@@ -84,48 +84,23 @@
       <div class="eyebrow">In the Studio</div>
       <h2>Works in Progress</h2>
     </div>
-    <div class="piece-gallery-wrap">
-    <div class="piece-gallery" data-gallery="franklin-gallery">
-      <div class="slide"><img src="images/franklin-wip-01.jpg" alt="Franklin, a welded fox sculpture in progress, head and shoulders built from bicycle gears and chain"></div>
-      <div class="slide"><img src="images/franklin-wip-02.jpg" alt="Franklin in progress, close-up of the gear and chain detail forming the face"></div>
-      <div class="slide"><img src="images/franklin-wip-03.jpg" alt="Franklin in progress, side profile of the head with ears and muzzle taking shape"></div>
-      <div class="slide"><img src="images/franklin-wip-04.jpg" alt="Franklin's head held up next to a reference photo of a fox"></div>
-      <div class="slide"><img src="images/franklin-wip-05.jpg" alt="Franklin's head viewed head-on, showing the gear-built eyes and muzzle"></div>
-      <div class="slide"><img src="images/franklin-wip-06.jpg" alt="Franklin's head mounted on the developing wire-frame body and legs"></div>
-      <div class="slide"><img src="images/franklin-wip-07.jpg" alt="Franklin's head next to a chalk outline of the body sketched on the work table"></div>
-      <div class="slide"><img src="images/franklin-wip-08.jpg" alt="Franklin's head next to a chalk sketch of the legs and reference photo"></div>
-      <div class="slide"><img src="images/franklin-wip-09.jpg" alt="Close-up of Franklin's muzzle and ear detail before final welding"></div>
-      <div class="slide"><img src="images/franklin-wip-10.jpg" alt="Franklin's head clamped in a vise during construction"></div>
-      <div class="slide"><img src="images/franklin-wip-11.jpg" alt="Franklin's face viewed head-on, showing symmetrical gear eyes"></div>
-      <div class="slide"><img src="images/franklin-wip-12.jpg" alt="Franklin's head and ears from a side angle, clamped in a vise"></div>
-    </div>
-    <button class="gallery-arrow gallery-arrow--prev" data-gallery-nav="franklin-gallery" data-dir="prev" aria-label="Previous image" disabled>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"></polyline></svg>
-    </button>
-    <button class="gallery-arrow gallery-arrow--next" data-gallery-nav="franklin-gallery" data-dir="next" aria-label="Next image">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
-    </button>
-    </div>
-    <div class="gallery-dots" data-gallery-nav="franklin-gallery">
-      <button class="dot active" aria-label="Go to image 1"></button>
-      <button class="dot" aria-label="Go to image 2"></button>
-      <button class="dot" aria-label="Go to image 3"></button>
-      <button class="dot" aria-label="Go to image 4"></button>
-      <button class="dot" aria-label="Go to image 5"></button>
-      <button class="dot" aria-label="Go to image 6"></button>
-      <button class="dot" aria-label="Go to image 7"></button>
-      <button class="dot" aria-label="Go to image 8"></button>
-      <button class="dot" aria-label="Go to image 9"></button>
-      <button class="dot" aria-label="Go to image 10"></button>
-      <button class="dot" aria-label="Go to image 11"></button>
-      <button class="dot" aria-label="Go to image 12"></button>
-    </div>
-    <div class="gallery-caption" style="margin-top:24px;">
-      <div>
-        <h3>Franklin</h3>
-        <span class="status-tag status-tag--tbd">TBD</span>
-      </div>
-      <div class="price-tag" style="font-size:20px; margin:0;">TBD</div>
+    <div class="gallery-list">
+      <a class="gallery-card reveal" href="sculptures/franklin-sculpture.html">
+        <div class="gallery-media">
+          <div class="parallax-layer" data-parallax>
+            <img src="images/franklin-wip-11.jpg" alt="Franklin, a welded fox sculpture in progress, face viewed head-on showing symmetrical gear eyes">
+          </div>
+        </div>
+        <div class="gallery-caption">
+          <div>
+            <h3>Franklin</h3>
+            <span class="status-tag status-tag--tbd">TBD</span>
+          </div>
+          <span class="see-more">See more
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
+          </span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -340,85 +315,6 @@
     window.addEventListener('resize', onScroll);
     updateParallax();
   }
-
-  // Side-scrolling piece gallery with dot indicator (Works in Progress)
-  document.querySelectorAll('.piece-gallery').forEach(gallery=>{
-    const galleryId = gallery.dataset.gallery;
-    const slides = Array.from(gallery.querySelectorAll('.slide'));
-    const dotsWrap = document.querySelector(`.gallery-dots[data-gallery-nav="${galleryId}"]`);
-    const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.dot')) : [];
-    const prevArrow = document.querySelector(`.gallery-arrow--prev[data-gallery-nav="${galleryId}"]`);
-    const nextArrow = document.querySelector(`.gallery-arrow--next[data-gallery-nav="${galleryId}"]`);
-    gallery.querySelectorAll('img').forEach(img=> img.addEventListener('dragstart', e=> e.preventDefault()));
-
-    function setActive(index){
-      dots.forEach((d,i)=>d.classList.toggle('active', i === index));
-      if (prevArrow) prevArrow.disabled = index === 0;
-      if (nextArrow) nextArrow.disabled = index === slides.length - 1;
-    }
-
-    function closestSlideIndex(){
-      const galleryRect = gallery.getBoundingClientRect();
-      const galleryCenter = galleryRect.left + galleryRect.width / 2;
-      let closest = 0, closestDist = Infinity;
-      slides.forEach((s,i)=>{
-        const r = s.getBoundingClientRect();
-        const dist = Math.abs((r.left + r.width / 2) - galleryCenter);
-        if (dist < closestDist) { closestDist = dist; closest = i; }
-      });
-      return closest;
-    }
-
-    let ticking2 = false;
-    gallery.addEventListener('scroll', ()=>{
-      if (!ticking2) {
-        requestAnimationFrame(()=>{ setActive(closestSlideIndex()); ticking2 = false; });
-        ticking2 = true;
-      }
-    }, { passive: true });
-
-    dots.forEach((dot,i)=>{
-      dot.addEventListener('click', ()=>{
-        slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
-      });
-    });
-
-    function goToSlide(index){
-      const clamped = Math.max(0, Math.min(slides.length - 1, index));
-      slides[clamped].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
-    }
-    if (prevArrow) prevArrow.addEventListener('click', ()=> goToSlide(closestSlideIndex() - 1));
-    if (nextArrow) nextArrow.addEventListener('click', ()=> goToSlide(closestSlideIndex() + 1));
-
-    // Desktop drag-to-scroll (mice have no native horizontal scroll).
-    // Touch is intentionally excluded — native touch scrolling is
-    // already smooth and capturing touch pointers here would fight
-    // the browser's vertical page-scroll handling.
-    let isDown = false, startX = 0, startScroll = 0;
-    gallery.addEventListener('pointerdown', (e)=>{
-      if (e.pointerType !== 'mouse') return;
-      isDown = true;
-      gallery.classList.add('dragging');
-      startX = e.clientX;
-      startScroll = gallery.scrollLeft;
-      gallery.setPointerCapture(e.pointerId);
-    });
-    gallery.addEventListener('pointermove', (e)=>{
-      if (e.pointerType !== 'mouse') return;
-      if (!isDown) return;
-      gallery.scrollLeft = startScroll - (e.clientX - startX);
-    });
-    function endDrag(e){
-      if (e && e.pointerType && e.pointerType !== 'mouse') return;
-      if (!isDown) return;
-      isDown = false;
-      gallery.classList.remove('dragging');
-      const nearest = closestSlideIndex();
-      slides[nearest].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
-    }
-    gallery.addEventListener('pointerup', endDrag);
-    gallery.addEventListener('pointerleave', endDrag);
-  });
 </script>
 
 </body>
