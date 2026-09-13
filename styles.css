@@ -99,21 +99,6 @@ nav{
   letter-spacing:normal;
   color:var(--brass);
   margin-left:4px;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-}
-.brand-script::before, .brand-script::after{
-  content:"";
-  height:1px;
-  width:56px;
-  display:inline-block;
-}
-.brand-script::before{
-  background:linear-gradient(to left, var(--brass-deep), transparent);
-}
-.brand-script::after{
-  background:linear-gradient(to right, var(--brass-deep), transparent);
 }
 @media (max-width:860px){
   .brand{
@@ -123,7 +108,21 @@ nav{
   }
   .brand-script{
     margin-left:0;
-    transform:translateX(-16px);
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand-script::before, .brand-script::after{
+    content:"";
+    height:1px;
+    width:56px;
+    display:inline-block;
+  }
+  .brand-script::before{
+    background:linear-gradient(to left, var(--brass-deep), transparent);
+  }
+  .brand-script::after{
+    background:linear-gradient(to right, var(--brass-deep), transparent);
   }
 }
 nav ul{
