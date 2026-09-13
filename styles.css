@@ -135,6 +135,9 @@ section:last-of-type{border-bottom:none;}
 
 /* header: full logo block, scrolls away normally */
 .site-header{
+  position:sticky;
+  top:0;
+  z-index:120;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -144,43 +147,6 @@ section:last-of-type{border-bottom:none;}
   border-bottom:1px solid var(--cream-line);
 }
 
-/* nav: only exists as a pinned bar once scrolled past the header —
-   invisible and takes no space until then. */
-nav{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  z-index:120;
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  padding:16px 40px;
-  background:var(--bg);
-  border-bottom:1px solid var(--cream-line);
-  opacity:0;
-  visibility:hidden;
-  transform:translateY(-8px);
-  pointer-events:none;
-  transition:opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
-}
-nav.is-pinned{
-  opacity:1;
-  visibility:visible;
-  transform:translateY(0);
-  pointer-events:auto;
-  transition:opacity .25s ease, transform .25s ease, visibility 0s linear 0s;
-}
-@media (prefers-reduced-motion: reduce){
-  nav{ transition:none; }
-  nav.is-pinned{ transition:none; }
-}
-.nav-spacer{
-  display:none;
-}
-.nav-spacer.is-active{
-  display:block;
-}
 .brand{
   font-family:'Playfair Display', serif;
   font-size:17px;
@@ -223,7 +189,7 @@ nav.is-pinned{
     background:linear-gradient(to right, var(--brass-deep), transparent);
   }
 }
-nav ul{
+.site-header ul{
   list-style:none;
   display:flex;
   align-items:center;
@@ -235,18 +201,18 @@ nav ul{
   letter-spacing:0.12em;
   text-transform:uppercase;
 }
-nav a{
+.site-header ul a{
   text-decoration:none;
   color:var(--ink-soft);
   border-bottom:1px solid transparent;
   padding-bottom:3px;
   transition:color .25s, border-color .25s;
 }
-nav a:hover, nav a:focus-visible{
+.site-header ul a:hover, .site-header ul a:focus-visible{
   color:var(--brass-deep);
   border-color:var(--brass);
 }
-nav a.nav-cta{
+.site-header ul a.nav-cta{
   display:inline-flex;
   align-items:center;
   gap:6px;
@@ -256,13 +222,13 @@ nav a.nav-cta{
   border-radius:999px;
   transition:background .25s, color .25s;
 }
-nav a.nav-cta:hover, nav a.nav-cta:focus-visible{
+.site-header ul a.nav-cta:hover, .site-header ul a.nav-cta:focus-visible{
   background:var(--brass-deep);
   color:var(--bg);
   border-color:var(--brass-deep);
 }
-nav a.nav-cta svg{ transition:transform .25s ease; }
-nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3px); }
+.site-header ul a.nav-cta svg{ transition:transform .25s ease; }
+.site-header ul a.nav-cta:hover svg, .site-header ul a.nav-cta:focus-visible svg{ transform:translateX(3px); }
 .mobile-menu a.nav-cta svg{ display:none; }
 .hamburger{
   display:none;
@@ -327,7 +293,7 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
 }
 
 @media (max-width:640px){
-  nav ul{display:none;}
+  .site-header ul{display:none;}
   .hamburger{display:flex;}
 }
 @media (prefers-reduced-motion: reduce){
@@ -855,7 +821,7 @@ footer{
 }
 .back-link{
   position:sticky;
-  top:60px;
+  top:113px;
   z-index:50;
   display:block;
   background:var(--bg);
