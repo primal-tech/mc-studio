@@ -118,7 +118,8 @@ section:last-of-type{border-bottom:none;}
   height:56px;
   transform:translateX(-50%);
   border-radius:50%;
-  background:radial-gradient(circle at 50% 50%, transparent 58%, var(--brass) 60%, var(--brass) 68%, transparent 70%);
+  border:2px solid var(--brass);
+  background:rgba(138,106,63,0.14);
   box-shadow:0 0 20px 3px rgba(138,106,63,0.3);
 }
 @media (prefers-reduced-motion: reduce){
