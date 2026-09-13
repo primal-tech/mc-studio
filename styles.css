@@ -106,10 +106,10 @@ section:last-of-type{border-bottom:none;}
   position:absolute;
   top:62%;
   left:50%;
-  width:64px;
-  height:8px;
+  width:46px;
+  height:16px;
   transform:translate(-50%, 0%);
-  background:rgba(42,37,33,0.16);
+  background:rgba(30,24,20,0.42);
   border-radius:50%;
 }
 .ball-scene .ball{
