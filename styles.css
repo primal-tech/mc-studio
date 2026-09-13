@@ -252,8 +252,13 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
   max-width:640px;
   margin:0 auto 72px;
 }
+.sec-head .eyebrow{ justify-content:center; }
 .sec-head h2{font-size:clamp(30px,4vw,42px);}
 .sec-head p{color:var(--ink-soft); margin-top:16px; font-size:17px;}
+@media (max-width:860px){
+  .sec-head{ text-align:center !important; margin-left:auto !important; }
+  .sec-head h2{ text-align:center !important; }
+}
 
 /* featured piece */
 .piece-gallery{
