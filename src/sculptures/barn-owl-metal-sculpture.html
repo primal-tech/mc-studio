@@ -114,6 +114,9 @@
 
   // Side-scrolling piece gallery with dot indicator
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) {
+    document.querySelectorAll('.shape-morph-svg animate').forEach(el => el.setAttribute('begin', 'indefinite'));
+  }
   document.querySelectorAll('.piece-gallery').forEach(gallery=>{
     const galleryId = gallery.dataset.gallery;
     const slides = Array.from(gallery.querySelectorAll('.slide'));
