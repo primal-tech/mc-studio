@@ -315,12 +315,6 @@ nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3
    photo fill the full viewport width, taller crop, no framed panel.
    Desktop keeps the contained, framed look above this breakpoint. */
 @media (max-width:860px){
-  .back-link{
-    margin-left:-40px;
-    margin-right:-40px;
-    width:calc(100% + 80px);
-    padding:12px 40px;
-  }
   .product-grid .piece-gallery-wrap{
     margin-left:-40px;
     margin-right:-40px;
@@ -773,6 +767,14 @@ footer{
   text-decoration:none;
 }
 .back-link:hover{ color:var(--brass-deep); }
+@media (max-width:860px){
+  .back-link{
+    margin-left:-40px;
+    margin-right:-40px;
+    width:calc(100% + 80px);
+    padding:12px 40px;
+  }
+}
 .product-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
