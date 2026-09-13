@@ -108,7 +108,7 @@ section:last-of-type{border-bottom:none;}
   left:50%;
   width:70px;
   height:22px;
-  transform:translate(-50%, 0) rotate(-8deg) skewX(-25deg);
+  transform:translate(calc(-50% + 13px), 0) rotate(-8deg) skewX(-25deg);
   transform-origin:50% 0%;
   background:rgba(30,24,20,0.42);
   border-radius:50%;
