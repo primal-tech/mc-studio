@@ -65,7 +65,7 @@ section:last-of-type{border-bottom:none;}
   content:"";
   width:6px;
   height:6px;
-  background:var(--brass-deep);
+  background:var(--brass);
   transform:rotate(45deg);
   display:inline-block;
   flex-shrink:0;
