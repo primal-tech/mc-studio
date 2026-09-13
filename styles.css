@@ -94,6 +94,16 @@ nav{
   letter-spacing:normal;
   color:var(--brass);
   margin-left:4px;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.brand-script::before, .brand-script::after{
+  content:"";
+  height:1px;
+  width:20px;
+  background:var(--cream-line);
+  display:inline-block;
 }
 @media (max-width:860px){
   .brand{
