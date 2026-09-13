@@ -141,6 +141,7 @@ section:last-of-type{border-bottom:none;}
   padding:26px 40px;
   background:var(--bg);
   color:var(--ink);
+  border-bottom:1px solid var(--cream-line);
 }
 
 /* nav: only exists as a pinned bar once scrolled past the header —
