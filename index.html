@@ -393,6 +393,9 @@
     function toSvgPoints(points){
       return points.map(p => p[0].toFixed(2) + ',' + p[1].toFixed(2)).join(' ');
     }
+    function easeInOutCubic(x){
+      return x < 0.5 ? 4*x*x*x : 1 - Math.pow(-2*x+2, 3)/2;
+    }
 
     const horizonLine = morphScene.querySelector('.horizon-line');
     const shapeSize = 70;
@@ -413,10 +416,16 @@
       const totalRotationDeg = (totalDistance / effectiveRadius) * (180 / Math.PI);
 
       let points;
-      if (progress < 0.5) {
-        points = lerpPoints(SQUARE, HEXAGON, progress / 0.5);
+      // Shape morphing uses an eased version of progress — lingers
+      // as a recognizable square early and a recognizable circle
+      // late, transitioning faster through the middle — while
+      // rotation, travel distance, and bounce below all stay tied
+      // to raw progress so the physical rolling speed never changes.
+      const morphT = easeInOutCubic(progress);
+      if (morphT < 0.5) {
+        points = lerpPoints(SQUARE, HEXAGON, morphT / 0.5);
       } else {
-        points = lerpPoints(HEXAGON, CIRCLE, (progress - 0.5) / 0.5);
+        points = lerpPoints(HEXAGON, CIRCLE, (morphT - 0.5) / 0.5);
       }
       const rotation = progress * totalRotationDeg;
       const targetCenterX = startX + progress * totalDistance;
