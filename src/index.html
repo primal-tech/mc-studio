@@ -305,7 +305,7 @@
   const ballScene = document.querySelector('[data-ball-scene]');
   const ballWrap = ballScene ? ballScene.querySelector('.ball-wrap') : null;
   if (ballScene && ballWrap && !prefersReducedMotion) {
-    const ballRadius = 28; // half the ball's 56px width
+    const ballRadius = 20; // half the ball's 40px width
     let ballTicking = false;
     function updateBall(){
       const rect = ballScene.getBoundingClientRect();
