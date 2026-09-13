@@ -263,17 +263,7 @@ nav a.nav-cta:hover, nav a.nav-cta:focus-visible{
 }
 nav a.nav-cta svg{ transition:transform .25s ease; }
 nav a.nav-cta:hover svg, nav a.nav-cta:focus-visible svg{ transform:translateX(3px); }
-.mobile-menu a.nav-cta{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  font-size:20px;
-  font-style:normal;
-  border:1px solid var(--brass-deep);
-  color:var(--brass-deep);
-  border-radius:999px;
-  padding:12px 26px 12px 30px;
-}
+.mobile-menu a.nav-cta svg{ display:none; }
 .hamburger{
   display:none;
   background:none;
