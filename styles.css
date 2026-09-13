@@ -101,7 +101,7 @@ section:last-of-type{border-bottom:none;}
   left:0;
   width:70px;
   height:70px;
-  background:rgba(30,24,20,0.42);
+  background:rgba(30,24,20,0.18);
   will-change:transform;
 }
 .morph-scene .morph-shape{
