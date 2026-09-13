@@ -102,12 +102,10 @@
   </div>
 </section>
 
-<div class="ball-scene" data-ball-scene aria-hidden="true">
+<div class="morph-scene" data-morph-scene aria-hidden="true">
   <div class="horizon-line"></div>
-  <div class="ball-wrap">
-    <div class="ball-shadow"></div>
-    <div class="ball"></div>
-  </div>
+  <div class="morph-shadow" data-morph-shadow></div>
+  <div class="morph-shape" data-morph-shape></div>
 </div>
 
 <section id="about">
@@ -299,36 +297,99 @@
     updateParallax();
   }
 
-  // Ball scene: rolls fully off-screen to fully off-screen as the
-  // section scrolls through the viewport, driven purely by scroll
-  // position rather than a looping CSS animation.
-  const ballScene = document.querySelector('[data-ball-scene]');
-  const ballWrap = ballScene ? ballScene.querySelector('.ball-wrap') : null;
-  if (ballScene && ballWrap && !prefersReducedMotion) {
-    const ballRadius = 20; // half the ball's 40px width
-    let ballTicking = false;
-    function updateBall(){
-      const rect = ballScene.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // 0 = section just entering at the bottom of the viewport,
-      // 1 = section has fully exited at the top.
-      let progress = (vh - rect.top) / (vh + rect.height);
-      progress = Math.max(0, Math.min(1, progress));
-      const startX = -(ballRadius * 2 + 40);
-      const endX = window.innerWidth + ballRadius * 2 + 40;
-      const x = startX + progress * (endX - startX);
-      ballWrap.style.transform = `translateX(${x}px)`;
-      ballTicking = false;
+  // Morph scene: a shape rolls square -> hexagon -> circle across
+  // the full screen width as the section scrolls through the
+  // viewport, with rotation, horizontal travel, and bounce all tied
+  // together via real rolling-without-slipping physics (distance =
+  // radius x rotation angle). No CSS animation loop — everything is
+  // computed from scroll position each frame, kept lightweight with
+  // requestAnimationFrame throttling like the rest of the page.
+  const morphScene = document.querySelector('[data-morph-scene]');
+  const morphShape = document.querySelector('[data-morph-shape]');
+  const morphShadow = document.querySelector('[data-morph-shadow]');
+  if (morphScene && morphShape && morphShadow && !prefersReducedMotion) {
+    const SQUARE = [[50,6],[64.67,6],[79.33,6],[94,6],[94,20.67],[94,35.33],[94,50],[94,64.67],[94,79.33],[94,94],[79.33,94],[64.67,94],[50,94],[35.33,94],[20.67,94],[6,94],[6,79.33],[6,64.67],[6,50],[6,35.33],[6,20.67],[6,6],[20.67,6],[35.33,6]];
+    const HEXAGON = [[50,6],[59.53,11.5],[69.05,17],[78.58,22.5],[88.11,28],[88.11,39],[88.11,50],[88.11,61],[88.11,72],[78.58,77.5],[69.05,83],[59.53,88.5],[50,94],[40.47,88.5],[30.95,83],[21.42,77.5],[11.89,72],[11.89,61],[11.89,50],[11.89,39],[11.89,28],[21.42,22.5],[30.95,17],[40.47,11.5]];
+    const CIRCLE = [[50,6],[61.39,7.5],[72,11.89],[81.11,18.89],[88.11,28],[92.5,38.61],[94,50],[92.5,61.39],[88.11,72],[81.11,81.11],[72,88.11],[61.39,92.5],[50,94],[38.61,92.5],[28,88.11],[18.89,81.11],[11.89,72],[7.5,61.39],[6,50],[7.5,38.61],[11.89,28],[18.89,18.89],[28,11.89],[38.61,7.5]];
+
+    function lerpPoints(a, b, t){
+      return a.map((p, i) => [
+        p[0] + (b[i][0] - p[0]) * t,
+        p[1] + (b[i][1] - p[1]) * t
+      ]);
     }
-    function onBallScroll(){
-      if (!ballTicking) {
-        requestAnimationFrame(updateBall);
-        ballTicking = true;
+    function toPolygon(points){
+      return 'polygon(' + points.map(p => p[0].toFixed(2) + '% ' + p[1].toFixed(2) + '%').join(', ') + ')';
+    }
+
+    const horizonLine = morphScene.querySelector('.horizon-line');
+    const shapeSize = 70;
+    const effectiveRadius = shapeSize / 2;
+
+    let morphTicking = false;
+    function updateMorph(){
+      const sceneRect = morphScene.getBoundingClientRect();
+      const vh = window.innerHeight;
+      let progress = (vh - sceneRect.top) / (vh + sceneRect.height);
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Full off-screen-to-off-screen travel, based on the actual
+      // current viewport width so it always spans the whole screen.
+      const startX = -(shapeSize + 40);
+      const endX = window.innerWidth + shapeSize + 40;
+      const totalDistance = endX - startX;
+      const totalRotationDeg = (totalDistance / effectiveRadius) * (180 / Math.PI);
+
+      let points;
+      if (progress < 0.5) {
+        points = lerpPoints(SQUARE, HEXAGON, progress / 0.5);
+      } else {
+        points = lerpPoints(HEXAGON, CIRCLE, (progress - 0.5) / 0.5);
+      }
+      const rotation = progress * totalRotationDeg;
+      const targetCenterX = startX + progress * totalDistance;
+
+      // Bounce: fixed frequency (never changes, so it can't pulse),
+      // amplitude fades smoothly toward zero as the shape rounds out.
+      const bounceAmplitude = Math.max(0.5, 8 * (1 - progress) + 0.5 * progress);
+      const bounceFrequency = 0.1;
+      const bounceHeight = bounceAmplitude * Math.pow(Math.sin(rotation * Math.PI / 180 * bounceFrequency), 2);
+      const normalizedBounce = bounceHeight / bounceAmplitude;
+
+      const clip = toPolygon(points);
+      const horizonY = horizonLine.getBoundingClientRect().top;
+
+      morphShape.style.clipPath = clip;
+      morphShape.style.transform = `rotate(${rotation}deg)`;
+      morphShadow.style.clipPath = clip;
+      morphShadow.style.transform = `rotate(${rotation}deg) scaleY(0.35)`;
+
+      const shapeRect = morphShape.getBoundingClientRect();
+      const shapeDX = targetCenterX - (shapeRect.left + shapeRect.width / 2);
+      const shapeDY = (horizonY - shapeRect.bottom) - bounceHeight;
+      morphShape.style.transform = `translate(${shapeDX}px, ${shapeDY}px) rotate(${rotation}deg)`;
+
+      // Shadow stays glued to the ground plane, shrinking and
+      // lightening at peak bounce, snapping back to full size and
+      // opacity the instant the shape touches down again.
+      const shadowRect = morphShadow.getBoundingClientRect();
+      const shadowDX = targetCenterX - (shadowRect.left + shadowRect.width / 2);
+      const shadowDY = horizonY - shadowRect.top;
+      const shadowScale = 1 - normalizedBounce * 0.4;
+      morphShadow.style.opacity = 1 - normalizedBounce * 0.3;
+      morphShadow.style.transform = `translate(${shadowDX}px, ${shadowDY}px) rotate(${rotation}deg) scaleY(0.35) scale(${shadowScale})`;
+
+      morphTicking = false;
+    }
+    function onMorphScroll(){
+      if (!morphTicking) {
+        requestAnimationFrame(updateMorph);
+        morphTicking = true;
       }
     }
-    window.addEventListener('scroll', onBallScroll, {passive:true});
-    window.addEventListener('resize', onBallScroll);
-    updateBall();
+    window.addEventListener('scroll', onMorphScroll, {passive:true});
+    window.addEventListener('resize', onMorphScroll);
+    updateMorph();
   }
 </script>
 

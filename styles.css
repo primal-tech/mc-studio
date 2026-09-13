@@ -77,54 +77,44 @@ section:last-of-type{border-bottom:none;}
   .shape-morph{ animation:none; }
 }
 
-/* Scroll-linked ball scene: a hollow, backlit ball that travels
-   fully off-screen to fully off-screen as the user scrolls past
-   this section, with a ground shadow and a subtle horizon line
-   for context. Position is driven entirely by scroll progress
-   (see the ballScene JS below) — no CSS animation loop. */
-.ball-scene{
+/* Scroll-linked morph scene: a shape that rolls square -> hexagon
+   -> circle across the full screen width as the user scrolls past
+   this section, rotating and bouncing with the shape's own rolling
+   physics, shadow included. Position, rotation, clip-path and
+   bounce are all driven by scroll progress in JS — no CSS animation
+   loop, so this stays lightweight. */
+.morph-scene{
   position:relative;
   height:160px;
   overflow:hidden;
 }
-.ball-scene .horizon-line{
+.morph-scene .horizon-line{
   position:absolute;
   left:0; right:0;
   top:62%;
   height:1px;
   background:linear-gradient(to right, transparent, var(--cream-line) 15%, var(--cream-line) 85%, transparent);
 }
-.ball-scene .ball-wrap{
+.morph-scene .morph-shadow{
   position:absolute;
   top:0;
   left:0;
-  width:100%;
-  height:100%;
+  width:70px;
+  height:70px;
+  background:rgba(30,24,20,0.42);
   will-change:transform;
 }
-.ball-scene .ball-shadow{
+.morph-scene .morph-shape{
   position:absolute;
-  top:62%;
-  left:50%;
+  top:0;
+  left:0;
   width:70px;
-  height:22px;
-  transform:translate(calc(-50% + 13px), 0) rotate(-8deg) skewX(-25deg);
-  transform-origin:50% 0%;
-  background:rgba(30,24,20,0.42);
-  border-radius:50%;
-}
-.ball-scene .ball{
-  position:absolute;
-  top:62%;
-  left:50%;
-  width:40px;
-  height:40px;
-  transform:translate(-50%, -100%);
-  border-radius:50%;
+  height:70px;
   background:var(--brass);
+  will-change:transform;
 }
 @media (prefers-reduced-motion: reduce){
-  .ball-scene .ball-wrap{ transform:none !important; left:50%; }
+  .morph-scene .morph-shape, .morph-scene .morph-shadow{ transform:none !important; left:50%; top:62%; }
 }
 
 .eyebrow{
