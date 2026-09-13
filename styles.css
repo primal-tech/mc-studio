@@ -64,9 +64,14 @@ section:last-of-type{border-bottom:none;}
 .eyebrow::before, .eyebrow::after{
   content:"";
   height:1px;
-  width:28px;
-  background:var(--brass);
+  width:56px;
   display:inline-block;
+}
+.eyebrow::before{
+  background:linear-gradient(to left, var(--brass-deep), transparent);
+}
+.eyebrow::after{
+  background:linear-gradient(to right, var(--brass-deep), transparent);
 }
 
 /* nav */
