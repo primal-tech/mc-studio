@@ -818,7 +818,7 @@ footer{
 }
 .back-link{
   position:sticky;
-  top:91px;
+  top:78px;
   z-index:50;
   display:block;
   background:var(--bg);
