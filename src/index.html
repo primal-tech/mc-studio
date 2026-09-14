@@ -147,6 +147,14 @@
   </div>
 </section>
 
+<div class="morph-scene" data-morph-scene data-reverse aria-hidden="true">
+  <div class="horizon-line"></div>
+  <div class="morph-shadow" data-morph-shadow></div>
+  <svg class="morph-shape-svg" data-morph-shape viewBox="0 0 100 100">
+    <polygon class="morph-polygon" data-morph-polygon points="" stroke-width="3" stroke-linejoin="round"/>
+  </svg>
+</div>
+
 <section id="contact">
   <div class="wrap">
     <div class="sec-head reveal" style="text-align:left; margin-left:0;">
@@ -326,11 +334,8 @@
   // radius x rotation angle). No CSS animation loop — everything is
   // computed from scroll position each frame, kept lightweight with
   // requestAnimationFrame throttling like the rest of the page.
-  const morphScene = document.querySelector('[data-morph-scene]');
-  const morphShape = document.querySelector('[data-morph-shape]');
-  const morphPolygon = document.querySelector('[data-morph-polygon]');
-  const morphShadow = document.querySelector('[data-morph-shadow]');
-  if (morphScene && morphShape && morphPolygon && morphShadow && !prefersReducedMotion) {
+  const morphScenes = document.querySelectorAll('[data-morph-scene]');
+  if (morphScenes.length && !prefersReducedMotion) {
     const SQUARE = [[50.00,1.00],[66.33,1.00],[82.67,1.00],[99.00,1.00],[99.00,17.33],[99.00,33.67],[99.00,50.00],[99.00,66.33],[99.00,82.67],[99.00,99.00],[82.67,99.00],[66.33,99.00],[50.00,99.00],[33.67,99.00],[17.33,99.00],[1.00,99.00],[1.00,82.67],[1.00,66.33],[1.00,50.00],[1.00,33.67],[1.00,17.33],[1.00,1.00],[17.33,1.00],[33.67,1.00]];
     const HEXAGON = [[50.00,1.00],[60.61,7.12],[71.22,13.25],[81.83,19.38],[92.44,25.50],[92.44,37.75],[92.44,50.00],[92.44,62.25],[92.44,74.50],[81.83,80.62],[71.22,86.75],[60.61,92.88],[50.00,99.00],[39.39,92.88],[28.78,86.75],[18.17,80.62],[7.56,74.50],[7.56,62.25],[7.56,50.00],[7.56,37.75],[7.56,25.50],[18.17,19.37],[28.78,13.25],[39.39,7.12]];
     const CIRCLE = [[50.00,1.00],[62.68,2.67],[74.50,7.56],[84.65,15.35],[92.44,25.50],[97.33,37.32],[99.00,50.00],[97.33,62.68],[92.44,74.50],[84.65,84.65],[74.50,92.44],[62.68,97.33],[50.00,99.00],[37.32,97.33],[25.50,92.44],[15.35,84.65],[7.56,74.50],[2.67,62.68],[1.00,50.00],[2.67,37.32],[7.56,25.50],[15.35,15.35],[25.50,7.56],[37.32,2.67]];
@@ -348,79 +353,97 @@
       return x < 0.5 ? 4*x*x*x : 1 - Math.pow(-2*x+2, 3)/2;
     }
 
-    const horizonLine = morphScene.querySelector('.horizon-line');
     const shapeSize = 70;
     const effectiveRadius = shapeSize / 2;
 
-    let morphTicking = false;
-    function updateMorph(){
-      const sceneRect = morphScene.getBoundingClientRect();
-      const vh = window.innerHeight;
-      let progress = (vh - sceneRect.top) / (vh + sceneRect.height);
-      progress = Math.max(0, Math.min(1, progress));
+    // One shared setup, parameterized by direction: the forward scene
+    // rolls left-to-right, square -> hexagon -> circle; the reversed
+    // scene (data-reverse) runs the exact same physics mirrored —
+    // right-to-left, circle -> hexagon -> square.
+    function setupMorphScene(sceneEl){
+      const reverse = sceneEl.hasAttribute('data-reverse');
+      const morphShape = sceneEl.querySelector('[data-morph-shape]');
+      const morphPolygon = sceneEl.querySelector('[data-morph-polygon]');
+      const morphShadow = sceneEl.querySelector('[data-morph-shadow]');
+      const horizonLine = sceneEl.querySelector('.horizon-line');
+      if (!morphShape || !morphPolygon || !morphShadow || !horizonLine) return;
 
-      // Full off-screen-to-off-screen travel, based on the actual
-      // current viewport width so it always spans the whole screen.
-      const startX = -(shapeSize + 40);
-      const endX = window.innerWidth + shapeSize + 40;
-      const totalDistance = endX - startX;
-      const totalRotationDeg = (totalDistance / effectiveRadius) * (180 / Math.PI);
+      const startShape = reverse ? CIRCLE : SQUARE;
+      const endShape = reverse ? SQUARE : CIRCLE;
 
-      let points;
-      // Shape morphing uses an eased version of progress — lingers
-      // as a recognizable square early and a recognizable circle
-      // late, transitioning faster through the middle — while
-      // rotation, travel distance, and bounce below all stay tied
-      // to raw progress so the physical rolling speed never changes.
-      const morphT = easeInOutCubic(progress);
-      if (morphT < 0.5) {
-        points = lerpPoints(SQUARE, HEXAGON, morphT / 0.5);
-      } else {
-        points = lerpPoints(HEXAGON, CIRCLE, (morphT - 0.5) / 0.5);
+      let morphTicking = false;
+      function updateMorph(){
+        const sceneRect = sceneEl.getBoundingClientRect();
+        const vh = window.innerHeight;
+        let progress = (vh - sceneRect.top) / (vh + sceneRect.height);
+        progress = Math.max(0, Math.min(1, progress));
+
+        // Full off-screen-to-off-screen travel. Reversed scenes just
+        // swap which edge is the start and which is the end — the
+        // resulting negative totalDistance naturally flips both the
+        // travel direction and the rotation direction together, so
+        // the rolling physics stay correct with no extra sign-
+        // flipping logic needed.
+        const leftEdge = -(shapeSize + 40);
+        const rightEdge = window.innerWidth + shapeSize + 40;
+        const startX = reverse ? rightEdge : leftEdge;
+        const endX = reverse ? leftEdge : rightEdge;
+        const totalDistance = endX - startX;
+        const totalRotationDeg = (totalDistance / effectiveRadius) * (180 / Math.PI);
+
+        let points;
+        const morphT = easeInOutCubic(progress);
+        if (morphT < 0.5) {
+          points = lerpPoints(startShape, HEXAGON, morphT / 0.5);
+        } else {
+          points = lerpPoints(HEXAGON, endShape, (morphT - 0.5) / 0.5);
+        }
+        const rotation = progress * totalRotationDeg;
+        const targetCenterX = startX + progress * totalDistance;
+
+        // Bounce: fixed frequency (never changes, so it can't pulse),
+        // amplitude fades smoothly toward zero as the shape rounds out.
+        const bounceAmplitude = Math.max(0.5, 8 * (1 - progress) + 0.5 * progress);
+        const bounceFrequency = 0.1;
+        const bounceHeight = bounceAmplitude * Math.pow(Math.sin(rotation * Math.PI / 180 * bounceFrequency), 2);
+        const normalizedBounce = bounceHeight / bounceAmplitude;
+
+        const svgPoints = toSvgPoints(points);
+        const horizonY = horizonLine.getBoundingClientRect().top;
+
+        morphPolygon.setAttribute('points', svgPoints);
+        morphShape.style.transform = `rotate(${rotation}deg)`;
+        morphShadow.style.transform = `scaleY(0.35)`;
+
+        const shapeRect = morphShape.getBoundingClientRect();
+        const shapeDX = targetCenterX - (shapeRect.left + shapeRect.width / 2);
+        const shapeDY = (horizonY - shapeRect.bottom) - bounceHeight;
+        morphShape.style.transform = `translate(${shapeDX}px, ${shapeDY}px) rotate(${rotation}deg)`;
+
+        // Shadow stays glued to the ground plane, shrinking and
+        // lightening at peak bounce, snapping back to full size and
+        // opacity the instant the shape touches down again.
+        const shadowRect = morphShadow.getBoundingClientRect();
+        const shadowDX = targetCenterX - (shadowRect.left + shadowRect.width / 2);
+        const shadowDY = horizonY - shadowRect.top;
+        const shadowScale = 1 - normalizedBounce * 0.4;
+        morphShadow.style.opacity = 1 - normalizedBounce * 0.3;
+        morphShadow.style.transform = `translate(${shadowDX}px, ${shadowDY}px) scaleY(0.35) scale(${shadowScale})`;
+
+        morphTicking = false;
       }
-      const rotation = progress * totalRotationDeg;
-      const targetCenterX = startX + progress * totalDistance;
-
-      // Bounce: fixed frequency (never changes, so it can't pulse),
-      // amplitude fades smoothly toward zero as the shape rounds out.
-      const bounceAmplitude = Math.max(0.5, 8 * (1 - progress) + 0.5 * progress);
-      const bounceFrequency = 0.1;
-      const bounceHeight = bounceAmplitude * Math.pow(Math.sin(rotation * Math.PI / 180 * bounceFrequency), 2);
-      const normalizedBounce = bounceHeight / bounceAmplitude;
-
-      const svgPoints = toSvgPoints(points);
-      const horizonY = horizonLine.getBoundingClientRect().top;
-
-      morphPolygon.setAttribute('points', svgPoints);
-      morphShape.style.transform = `rotate(${rotation}deg)`;
-      morphShadow.style.transform = `scaleY(0.35)`;
-
-      const shapeRect = morphShape.getBoundingClientRect();
-      const shapeDX = targetCenterX - (shapeRect.left + shapeRect.width / 2);
-      const shapeDY = (horizonY - shapeRect.bottom) - bounceHeight;
-      morphShape.style.transform = `translate(${shapeDX}px, ${shapeDY}px) rotate(${rotation}deg)`;
-
-      // Shadow stays glued to the ground plane, shrinking and
-      // lightening at peak bounce, snapping back to full size and
-      // opacity the instant the shape touches down again.
-      const shadowRect = morphShadow.getBoundingClientRect();
-      const shadowDX = targetCenterX - (shadowRect.left + shadowRect.width / 2);
-      const shadowDY = horizonY - shadowRect.top;
-      const shadowScale = 1 - normalizedBounce * 0.4;
-      morphShadow.style.opacity = 1 - normalizedBounce * 0.3;
-      morphShadow.style.transform = `translate(${shadowDX}px, ${shadowDY}px) scaleY(0.35) scale(${shadowScale})`;
-
-      morphTicking = false;
-    }
-    function onMorphScroll(){
-      if (!morphTicking) {
-        requestAnimationFrame(updateMorph);
-        morphTicking = true;
+      function onMorphScroll(){
+        if (!morphTicking) {
+          requestAnimationFrame(updateMorph);
+          morphTicking = true;
+        }
       }
+      window.addEventListener('scroll', onMorphScroll, {passive:true});
+      window.addEventListener('resize', onMorphScroll);
+      updateMorph();
     }
-    window.addEventListener('scroll', onMorphScroll, {passive:true});
-    window.addEventListener('resize', onMorphScroll);
-    updateMorph();
+
+    morphScenes.forEach(setupMorphScene);
   }
 </script>
 
