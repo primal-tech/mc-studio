@@ -176,14 +176,16 @@ section:last-of-type{border-bottom:none;}
   .brand-script::before, .brand-script::after{
     content:"";
     height:1px;
-    width:56px;
+    width:40px;
     display:inline-block;
+    position:relative;
+    top:2px;
   }
   .brand-script::before{
-    background:linear-gradient(to left, var(--brass-deep), transparent);
+    background:linear-gradient(to left, var(--brass), transparent);
   }
   .brand-script::after{
-    background:linear-gradient(to right, var(--brass-deep), transparent);
+    background:linear-gradient(to right, var(--brass), transparent);
   }
 }
 .site-header ul{
