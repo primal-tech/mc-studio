@@ -50,6 +50,13 @@
           <button class="dot" aria-label="Go to image 4"></button>
           <button class="dot" aria-label="Go to image 5"></button>
         </div>
+        <div class="gallery-thumbs" data-gallery-nav="sentinel-gallery">
+          <button class="thumb active" data-thumb-index="0" aria-label="View image 1"><img src="../images/sentinel-flight-2.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="1" aria-label="View image 2"><img src="../images/sentinel-flight-1.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="2" aria-label="View image 3"><img src="../images/sentinel-hero.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="3" aria-label="View image 4"><img src="../images/sentinel-head-detail.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="4" aria-label="View image 5"><img src="../images/sentinel-detail.jpg" alt=""></button>
+        </div>
       </div>
       <div>
         <h1 style="font-size:40px; margin-bottom:6px;">Sentinel</h1>
@@ -135,12 +142,15 @@
     const slides = Array.from(gallery.querySelectorAll('.slide'));
     const dotsWrap = document.querySelector(`.gallery-dots[data-gallery-nav="${galleryId}"]`);
     const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.dot')) : [];
+    const thumbsWrap = document.querySelector(`.gallery-thumbs[data-gallery-nav="${galleryId}"]`);
+    const thumbs = thumbsWrap ? Array.from(thumbsWrap.querySelectorAll('.thumb')) : [];
     const prevArrow = document.querySelector(`.gallery-arrow--prev[data-gallery-nav="${galleryId}"]`);
     const nextArrow = document.querySelector(`.gallery-arrow--next[data-gallery-nav="${galleryId}"]`);
     gallery.querySelectorAll('img').forEach(img=> img.addEventListener('dragstart', e=> e.preventDefault()));
 
     function setActive(index){
       dots.forEach((d,i)=>d.classList.toggle('active', i === index));
+      thumbs.forEach((t,i)=>t.classList.toggle('active', i === index));
       if (prevArrow) prevArrow.disabled = index === 0;
       if (nextArrow) nextArrow.disabled = index === slides.length - 1;
     }
@@ -167,6 +177,11 @@
 
     dots.forEach((dot,i)=>{
       dot.addEventListener('click', ()=>{
+        slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+      });
+    });
+    thumbs.forEach((thumb,i)=>{
+      thumb.addEventListener('click', ()=>{
         slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
       });
     });

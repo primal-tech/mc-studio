@@ -7,7 +7,7 @@
 <meta name="description" content="Locked Away is a Barn Owl sculpture by Michael Cunningham Studio, inspired by the artist's favorite bird — with a heart-shaped lock and key at its center, left open to interpretation. Available for purchase or by commission.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Allura&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=6cc4fccf">
+<link rel="stylesheet" href="../styles.css?v=83de3f50">
 </head>
 <body>
 
@@ -55,6 +55,10 @@
         <div class="gallery-dots" data-gallery-nav="locked-away-gallery">
           <button class="dot active" aria-label="Go to image 1"></button>
           <button class="dot" aria-label="Go to image 2"></button>
+        </div>
+        <div class="gallery-thumbs" data-gallery-nav="barn-owl-gallery">
+          <button class="thumb active" data-thumb-index="0" aria-label="View image 1"><img src="../images/locked-away-hero.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="1" aria-label="View image 2"><img src="../images/locked-away-detail.jpg" alt=""></button>
         </div>
       </div>
       <div>
@@ -168,12 +172,15 @@
     const slides = Array.from(gallery.querySelectorAll('.slide'));
     const dotsWrap = document.querySelector(`.gallery-dots[data-gallery-nav="${galleryId}"]`);
     const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.dot')) : [];
+    const thumbsWrap = document.querySelector(`.gallery-thumbs[data-gallery-nav="${galleryId}"]`);
+    const thumbs = thumbsWrap ? Array.from(thumbsWrap.querySelectorAll('.thumb')) : [];
     const prevArrow = document.querySelector(`.gallery-arrow--prev[data-gallery-nav="${galleryId}"]`);
     const nextArrow = document.querySelector(`.gallery-arrow--next[data-gallery-nav="${galleryId}"]`);
     gallery.querySelectorAll('img').forEach(img=> img.addEventListener('dragstart', e=> e.preventDefault()));
 
     function setActive(index){
       dots.forEach((d,i)=>d.classList.toggle('active', i === index));
+      thumbs.forEach((t,i)=>t.classList.toggle('active', i === index));
       if (prevArrow) prevArrow.disabled = index === 0;
       if (nextArrow) nextArrow.disabled = index === slides.length - 1;
     }
@@ -200,6 +207,11 @@
 
     dots.forEach((dot,i)=>{
       dot.addEventListener('click', ()=>{
+        slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+      });
+    });
+    thumbs.forEach((thumb,i)=>{
+      thumb.addEventListener('click', ()=>{
         slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
       });
     });

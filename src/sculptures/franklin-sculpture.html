@@ -54,6 +54,20 @@
           <button class="dot" aria-label="Go to image 11"></button>
           <button class="dot" aria-label="Go to image 12"></button>
         </div>
+        <div class="gallery-thumbs" data-gallery-nav="franklin-gallery">
+          <button class="thumb active" data-thumb-index="0" aria-label="View image 1"><img src="../images/franklin-wip-05.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="1" aria-label="View image 2"><img src="../images/franklin-wip-01.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="2" aria-label="View image 3"><img src="../images/franklin-wip-02.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="3" aria-label="View image 4"><img src="../images/franklin-wip-03.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="4" aria-label="View image 5"><img src="../images/franklin-wip-04.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="5" aria-label="View image 6"><img src="../images/franklin-wip-06.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="6" aria-label="View image 7"><img src="../images/franklin-wip-07.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="7" aria-label="View image 8"><img src="../images/franklin-wip-08.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="8" aria-label="View image 9"><img src="../images/franklin-wip-09.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="9" aria-label="View image 10"><img src="../images/franklin-wip-10.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="10" aria-label="View image 11"><img src="../images/franklin-wip-11.jpg" alt=""></button>
+          <button class="thumb" data-thumb-index="11" aria-label="View image 12"><img src="../images/franklin-wip-12.jpg" alt=""></button>
+        </div>
       </div>
       <div>
         <h1 style="font-size:40px; margin-bottom:6px;">Franklin</h1>
@@ -144,12 +158,15 @@
     const slides = Array.from(gallery.querySelectorAll('.slide'));
     const dotsWrap = document.querySelector(`.gallery-dots[data-gallery-nav="${galleryId}"]`);
     const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.dot')) : [];
+    const thumbsWrap = document.querySelector(`.gallery-thumbs[data-gallery-nav="${galleryId}"]`);
+    const thumbs = thumbsWrap ? Array.from(thumbsWrap.querySelectorAll('.thumb')) : [];
     const prevArrow = document.querySelector(`.gallery-arrow--prev[data-gallery-nav="${galleryId}"]`);
     const nextArrow = document.querySelector(`.gallery-arrow--next[data-gallery-nav="${galleryId}"]`);
     gallery.querySelectorAll('img').forEach(img=> img.addEventListener('dragstart', e=> e.preventDefault()));
 
     function setActive(index){
       dots.forEach((d,i)=>d.classList.toggle('active', i === index));
+      thumbs.forEach((t,i)=>t.classList.toggle('active', i === index));
       if (prevArrow) prevArrow.disabled = index === 0;
       if (nextArrow) nextArrow.disabled = index === slides.length - 1;
     }
@@ -176,6 +193,11 @@
 
     dots.forEach((dot,i)=>{
       dot.addEventListener('click', ()=>{
+        slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
+      });
+    });
+    thumbs.forEach((thumb,i)=>{
+      thumb.addEventListener('click', ()=>{
         slides[i].scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', inline: 'center', block: 'nearest' });
       });
     });
