@@ -432,7 +432,7 @@ section:last-of-type{border-bottom:none;}
   font-size:15px;
 }
 .spec-row span:first-child{color:var(--ink-soft); letter-spacing:0.06em; text-transform:uppercase; font-size:12px; flex-shrink:0;}
-.spec-row span:last-child{text-align:right;}
+.spec-row span:last-child{text-align:left;}
 .info-notes{
   margin-top:24px;
   padding-top:20px;
