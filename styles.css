@@ -684,16 +684,19 @@ footer{
    Gallery (index.html) — a simple stacked list of pieces.
    ------------------------------------------------------------ */
 .gallery-list{
-  display:flex;
-  flex-direction:column;
-  gap:56px;
-  max-width:640px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  gap:48px 40px;
+  max-width:1100px;
   margin:0 auto;
 }
 .gallery-list .gallery-card{
   display:block;
   text-decoration:none;
   color:var(--ink);
+  max-width:480px;
+  justify-self:center;
+  width:100%;
 }
 .gallery-media{
   position:relative;
@@ -701,6 +704,37 @@ footer{
   aspect-ratio:4/5;
   background:var(--bg-panel);
   border:1px solid var(--cream-line);
+}
+/* When a gallery section has exactly one piece (typical for Works
+   in Progress), give it a wider featured treatment instead of
+   looking like an orphaned card floating in empty grid space —
+   image and details side by side, similar to a product page.
+   Automatically reverts to the standard grid card once a second
+   piece is added. Desktop only; mobile stays the normal stacked
+   single-column card. */
+@media (min-width:861px){
+  .gallery-list .gallery-card:only-child{
+    max-width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    align-items:center;
+  }
+  .gallery-list .gallery-card:only-child .gallery-caption{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+    margin-top:0;
+    padding-bottom:0;
+    border-bottom:none;
+  }
+  .gallery-list .gallery-card:only-child .gallery-caption > div{ width:100%; }
+  .gallery-list .gallery-card:only-child .gallery-teaser{
+    white-space:normal;
+    max-width:none;
+  }
+  .gallery-list .gallery-card:only-child .see-more{ margin-top:8px; }
 }
 /* Mobile: give each gallery photo a modest inset (16px from the
    screen edge) instead of the page's normal 40px side padding —
