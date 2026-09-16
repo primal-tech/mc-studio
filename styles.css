@@ -319,7 +319,7 @@ section:last-of-type{border-bottom:none;}
 }
 .piece-gallery .slide img{
   width:100%;
-  aspect-ratio:3/4;
+  aspect-ratio:4/3;
   object-fit:cover;
   display:block;
   -webkit-user-drag:none;
@@ -880,7 +880,14 @@ footer{
   gap:70px;
   align-items:start;
 }
-@media (max-width:860px){ .product-grid{grid-template-columns:1fr;} }
+.product-grid > div:first-child{
+  position:sticky;
+  top:98px;
+}
+@media (max-width:860px){
+  .product-grid{grid-template-columns:1fr;}
+  .product-grid > div:first-child{ position:static; top:auto; }
+}
 .price-row{
   display:flex;
   align-items:center;
