@@ -891,8 +891,11 @@ footer{
   background:var(--bg);
   border-bottom:1px solid var(--cream-line);
   box-shadow:0 2px 10px rgba(42,37,33,0.06);
-  padding:12px 0;
+  padding:12px 40px;
   margin-bottom:24px;
+  margin-left:calc(-50vw + 50%);
+  margin-right:calc(-50vw + 50%);
+  width:100vw;
   font-size:13px;
   letter-spacing:0.1em;
   text-transform:uppercase;
@@ -900,14 +903,6 @@ footer{
   text-decoration:none;
 }
 .back-link:hover{ color:var(--brass-deep); }
-@media (max-width:860px){
-  .back-link{
-    margin-left:-40px;
-    margin-right:-40px;
-    width:calc(100% + 80px);
-    padding:12px 40px;
-  }
-}
 .product-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
