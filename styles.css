@@ -319,7 +319,7 @@ section:last-of-type{border-bottom:none;}
 }
 .piece-gallery .slide img{
   width:100%;
-  aspect-ratio:4/3;
+  aspect-ratio:3/4;
   object-fit:cover;
   display:block;
   -webkit-user-drag:none;
